@@ -1,0 +1,949 @@
+#    -*- mode: org -*-
+#+OPTIONS: reveal_center:nil reveal_progress:t reveal_history:t reveal_control:t
+#+OPTIONS: reveal_mathjax:nil reveal_rolling_links:nil reveal_keyboard:t reveal_overview:t 
+#+OPTIONS: reveal_width:1024 reveal_height:768
+#+OPTIONS: toc:1 timestamp:nil
+#+OPTIONS: num:2
+#+REVEAL_MARGIN: 0.2
+#+REVEAL_MIN_SCALE: 0.5
+#+REVEAL_MAX_SCALE: 2.5
+#+REVEAL_TRANS: none
+# +REVEAL_THEME: night
+# +REVEAL_THEME: hackover
+#+REVEAL_THEME: crt
+#+REVEAL_HLEVEL: 2
+#+LANGUAGE: de
+# +REVEAL_EXTRA_CSS: ./presentation.css
+
+#+TITLE: TDD, Clean Code, Software Craftmanship und so’n Zeug
+#+AUTHOR: mitch@cgarbs.de
+#+EMAIL: mitch@cgarbs.de
+#+DATE: Hackover 2017
+
+* disclaimer
+
+- Es gibt Literatur zu den Themen.  Ich habe sie nicht gelesen.
+- Das alles stammt aus Praxiserfahrung und aus dem Internet.
+- Dargestellt aus Entwicklersicht für Entwickler.
+- Ich bin nur ein Quereinsteiger.
+
+Have fun!
+
+* ad hominem
+
+#+ATTR_HTML: :width 100%
+| 1986 | CPC 664  | Locomotive Basic |
+| 1989 | Atari ST | GfA Basic        |
+| 1994 | DOS      | Turbo Pascal     |
+| 1996 | Linux    | Perl, Shell      |
+| 1998 | zOS      | COBOL $$         |
+| 2000 | Windows  | Java $$          |
+
+*** 2015: Jahr des Umsturzes
+
+- von Java 1.5 auf Java 8
+- /Continus Integration/ kennengelernt
+- neue Frameworks (/Vaadin/ + diverse interne)
+- in den ASE-Zaubertopf gefallen
+
+Effektiv in den letzten 2 Jahren mehr neues gelernt als die 10 Jahre
+davor.  Toll!
+* Software Craftmanship
+
+ist der Gedanke, Softwareentwicklung wie ein Handwerk zu betrachten
+und nicht als industrielle Massenproduktion.  Damit einher geht ein
+gewisser Qualitätsanspruch an sich selbst und seine Arbeit sowie die
+Reflexion darüber:
+
+- Was habe ich gelernt?
+- Was lief gut?  Was lief weniger gut?
+- Was mache ich nochmal so?  Was lieber nicht?
+
+Diese Werte vertritt unter anderem die [[https://www.softwerkskammer.org/][Softwerkskammer]].
+
+** Lernen
+
+Ein Weg zu Qualität ist, sich fortzubilden, und zwar auf
+verschiedensten Ebenen:
+
+- technisches Wissen (neue Frameworks, neue Sprachen, …)
+- Fachwissen (ggf. branchenspezifisch)
+- Handwerkszeug (IDEs, Design-Pattern, …)
+- Arbeitstechniken (Zeitmanagement, „Agile“, …)
+- Softskills (Wissensvermittlung, Konfliktmanagement, …)
+
+** Katas
+
+sind kleine, überschaubare Programmieraufgaben, die sich flexibel
+verwenden lassen, um Dinge auszuprobieren oder zu vertiefen:
+
+- Entwicklungstechniken (Refactoring, Design-Patterns, Test Driven Development,
+  Type Driven Development, …)
+- Programmiersprachen oder -konzepte (z.B. Streams und Optionals in Java 8)
+- IDEs (ohne Maus, vi-Keybindings, …)
+- Frameworks (ggf. auch nur neue Features in neuen Versionen)
+- das neue Keyboardlayout
+- schon mal /Pair Programming/ gemacht?
+
+*** Warum Katas?
+
+- Lernen durch Machen bleibt am besten hängen
+- Ausprobieren festigt - Fehler mal zulassen
+  - das geht aber nicht im Arbeitsalltag!
+  - ergo: Zeiten und Räume dafür schaffen
+
+#+BEGIN_QUOTE
+Wir haben keine Zeit, die Axt zu schärfen, wir müssen Bäume fällen.
+#+END_QUOTE
+
+Es lohnt sich, sich die Zeit zu nehmen!
+
+*** Constraints
+machen Katas interessanter, thembenbezogener und schwieriger.  Damit
+lohnt dann auch eine Wiederholung.  Nicht für Produktivcode gedacht!
+
+- keine Maus (IDE kennenlernen)
+- nur Methoden ohne Rückgabeparameter
+- keine einfachen Datentypen erlaubt (-> /Type Driven Development/)
+- keine Methode länger als 5 Zeilen
+- nur eine Blocktiefe pro Methode
+- …
+
+Hardcore-Modus: [[https://gist.github.com/bobuss/6534934][Object Calesthenics]]
+
+*** TODO historisch                                           :noexport:
+
+- kommt aus dem Kampfsport: /muscle memory/
+- einen Quicksort so oft üben, dass man ihn auswendig und besonders
+  schnell runtertippen kann?
+  - na ja :-/
+  - bringt vielleicht Zuguckern oder Lesern ein Aha-Erlebnis, aber
+    dann doch lieber selber machen
+  - wenn man es 50 mal macht und jedes mal /leicht anders/, dann lernt
+    man durchaus was dabei
+
+Vielleicht hat sich das so entwickelt?
+
+** in extremo
+
+- /Katas/ im /Pair Programming/ übers Internet mit Leuten, die man
+  nicht kennt (Chatroulette Developer Edition)
+
+- „Software-Walz“: „Hallo $FIRMA, ihr zahlt mir Mittagessen und ein
+  Hotelzimmer, dafür mache ich zwei Tage lang je drei /Pair
+  Programming/-Sessions mit euren Entwicklern, dann ziehe ich weiter.“
+* Infrastuktur
+
+heißt dieses Kapitel, weil es hier um zentrale Dinge geht, die der
+Entwickler zwar braucht, aber nicht unbedingt selbst in der Hand hat.
+
+** Source Repository
+
+ist die Stelle, an der der Quellcode zentral abgelegt wird.
+
+- Vorteile liegen auf der Hand
+  - Nachvollziehbarkeit
+  - Branching
+  - Backupfähigkeit
+  - verteiltes Arbeiten
+- heutzutage /state of the art/
+  - damit vmtl. sogar rechtlich relevant
+
+Bekannte Tools wären [[https://git-scm.com/][git]], [[https://subversion.apache.org/][SVN]], …
+
+#+BEGIN_NOTES
+- *Commit-Nachrichten!*
+
+- *PFUI SVN!*
+  - Merge auf eine Datei, die zwischdurch umbenannt wurde
+    - kein Fehler
+    - Merge completed
+    - /aber nichts gemacht/
+  - offen seit mindestens 8 Jahren
+  - war es dieser [[https://issues.apache.org/jira/browse/SVN-898][Bug]]? (der ist 15 Jahre alt…)
+  - vor drei(?) Jahren Begeisterung in der Fachpresse: „wird mit Version
+    1.10 gefixt!“
+    - die ist nur leider immer noch nicht erschienen oder so
+#+END_NOTES
+
+** Continuous Integration
+
+bedeutet, dass man seine Software regelmäßig baut und testet.  Je
+schneller man neu eingebaute Fehler findet, um so eher weiß man noch,
+was man gerade getan hat.  Oder wer es war.
+
+Lieber 3× pro Woche mit einem einzelnen Fehler den Build kaputtmachen
+als zum Releasetermin mit 50 Problemen auf einmal zu kämpfen.
+
+Tools dafür wären z.B. [[https://jenkins.io/][Jenkins]] oder [[https://travis-ci.org/][TravisCI]].
+
+*** Build
+
+- regelmäßig und /oft/ bauen
+  - nicht nur 1× pro Woche oder pro Monat
+- kurzfristig bauen
+  - direkt nach jedem Commit
+
+Dafür ist ein manueller Build zu aufwändig und teuer, daher braucht
+man einen /automatischem Buildprozess/.  Das führt zu
+/reproduzierbaren Ergebnissen/ und vergessene bzw. fehlerhafte
+Schritte im Build werden als Fehlerquelle ausgeschlossen.
+
+*** Test
+
+- regelmäßig und /oft/ testen
+  - nicht nur 1× pro Woche oder pro Monat
+- kurzfristig testen
+  - direkt nach jedem Commit
+
+Dafür sind manuelle Tests zu aufwändig und teuer, daher braucht man
+/automatisierte Tests/.  Nebenbei fallen dann auch regelmäßig
+Test-Metriken ab (Testabdeckung, Testanzahl, Fehlerquoten,
+Problem-Hotspots, …).
+
+Manuelle Tests sind weiterhin nötig, aber nicht als Teil von
+/Continuous Integration/.
+
+** Continuous Inspection
+
+ist dann, wenn man regelmäßig (z.B. im CI-Build oder über Nacht)
+automatisiert Metriken ermittelt (z.B. ~// FIXME~ zählen) und/oder den
+Code auf mögliche Fehler und Warnungen überprüft (z.B. fehlende
+NullPointer-Prüfungen oder ~==~ statt ~equals()~).
+
+Tools dafür wären z.B. [[http://findbugs.sourceforge.net/][FindBugs]], [[https://www.sonarqube.org/][SonarQube]], [[https://pmd.github.io/][PMD/CPD]] oder [[https://metacpan.org/pod/Perl::Critic][Perl::Critic]].
+
+** Continuous Delivery
+
+ist dann, wenn man erzeugte Buildergebnisse automatisiert in eine
+Testumgebung einspielt.
+
+Anders als /Continuous Integration/ hat das nicht nur Vorteile,
+sondern hier ist eine Abwägung nötig, weil verschiedene negative
+Effekte auftreten können.
+
+*** Continuous Delivery
+
+- gut: laufend aktualisierter Stand in Testumgebung
+- aber: Deployment/Auslieferung/Aufspielung unterbricht laufende Tests
+- Fehler in zentralen Komponenten (z.B. Login) haben durchschlagende
+  Wirkung auf andere
+  - vielleicht doch nicht alles sofort automatisch deployen?
+  - eigene Testumgebung für jede Komponente?
+  - mehrstufiges Testkonzept?
+
+*** Continuous Delivery
+
+- grundsätzlich nicht mehr Fehler als vorher zu erwarten, aber
+  - zeitlich verteilter
+  - höhere Änderungsrate
+  - immer mal wieder was andere
+
+* Tests
+
+verifizieren, dass Code nach einer Änderung (noch) das tut, was er
+soll.
+
+Je früher im Software-Lifecycle Fehler gefunden werden, um so billiger
+sind sie zu beheben.
+
+#+BEGIN_NOTES
+Beispiel:
+Während der Erfassung der Requirements ist ein „das kann ja gar nicht
+funktionieren“ deutlich billiger als wenn das erst nach zwei Monaten
+Programmierarbeit festgestellt wird.  Oder gar erst in Produktion.
+#+END_NOTES
+
+** Testpyramide
+
+Es gibt verschiedene Arten von Tests:
+
+#+ATTR_HTML: :width 100%
+| Art                             | Anzahl | Häufigkeit | Kosten |
+|---------------------------------+--------+------------+--------|
+| manuelle Tests                  | ~#~    | ~I~        | ~$$$$~ |
+| automatisierte Oberflächentests | ~##~   | ~II~       | ~$$$~  |
+| Integrationstests               | ~###~  | ~III~      | ~$$~   |
+| Unit-Tests                      | ~####~ | ~IIII~     | ~$~    |
+
+Desweiteren /Lasttests/, /Fuzzying/, /Smoke-Tests/ etc.
+
+#+BEGIN_NOTES
+- Lasttests :: Testet Laufzeitverhalten und Ressourcenverbrauch unter
+               Last, meist durch viele parallele simulierte User oder
+               große Datenmengen.  Benötigt meist eine besonders
+               produktionsnahe Umgebung für sinnvolle Aussagen (eher
+               nicht der lokale Entwicklerrechner).  Wird im
+               Normalfall automatisiert getestet (Gegenbeispiel wäre
+               ein Free-for-all-Beta-Wochenende bei einem
+               Online-Spiel).
+
+- Fuzzying :: Versucht, Programmfehler durch ungültige Eingabedaten
+              herauszukitzeln (ursprünglich mit zufälligen Daten,
+              inzwischen aber schon sehr gezielt - interessanter
+              Forschungsbereich).  Meist geht es um Security-Probleme
+              (Buffer-Overflows etc.).  Bei interaktiven Programmen
+              reicht es manchmal schon, eine Katze über die Tastatur
+              laufen zu lassen.  Oder /millions of Monkeys banging on
+              typewriters/.  Wird im Normalfall automatisiert
+              getestet.
+
+- Smoke-Tests :: Kurztest nach dem Deployment einer neuen Version in
+                 eine (Test-)Umgebung.  Wird meist aus kostengründen
+                 automatisiert, je nach Deploymenthäufigkeit kann aber
+                 auch ein manueller Test ausreichen - der Test selbst
+                 geht ja schnell und testet nur das wichtigste
+                 (z.B. Logon und eine Query).
+#+END_NOTES
+
+** Unit-Tests
+
+Unit-Tests sind Tests, die ein einzelnes Stück Code (ein Modul, eine
+Klasse) testen und dabei möglichst unabhängig von allem anderen sind.
+Sie testen explizit nicht das Zusammenspiel mehrerer Komponenten.
+
+Gute Unit-Tests sollten /fast/, /isolated/, /repeatable/,
+/self-validating/ und /timely/ sein.
+
+*** FIRST
+
+- Fast :: Schnelle Ausführung.  Wer z.B. ernsthaft mit /TDD/ arbeiten
+  möchte, muss in die Größenordnung „unter drei Sekunden für mehrere
+  hundert Tests“ kommen.
+- Isolated :: Die Tests hängen nicht voneinander ab.  Jeder ist für sich
+  einzeln ausführbar.  Die Reihenfolge der Testfälle ist egal.
+  Notwendiges Setup ist Teil des jeweilgen Tests.
+
+*** FIRST
+
+- Repeatable :: Eine erneute Durchführung auf der gleichen Codebasis
+  muss exakt das gleiche Ergebnis bringen.
+- Self-Validating :: Der Test prüft, ob das Ergebnis falsch oder korrekt
+  ist.  Es werden nicht einfach Daten zusammengesucht, die dann im
+  Anschluss ein Mensch bewerten muss.
+- Timely :: Tests sollten zeitnah geschrieben (siehe /TDD/) und zeitnah
+  ausgeführt werden (siehe /Continuous Integration/).
+
+*** Allgemeines
+- Tests sind /first-class/-code
+  - Clean Code, Wartbarkeit, Wiederverwendung…
+- Tests müssen bei Änderungen angepasst werden
+  - in Schätzungen direkt mit einpreisen
+  - getrennt ausgewiesen wird es gestrichen ;-)
+- Tests regelmäßig ausführen, sonst veralten sie
+  - siehe /Continuous Integration/
+- Tests sind Dokumentation…
+  - …die bei Änderungen angepasst werden *muss*
+  - bei guten Tests kann eine Komponente allein auf Basis der Tests
+    reimplementiert werden
+
+*** Abhängigkeiten
+
+#+BEGIN_QUOTE
+Ich kann das aber nicht einzeln testen, ich brauche den Server und die
+Datenbank und das Netzwerk…
+#+END_QUOTE
+
+#+ATTR_REVEAL: :frag t
+Standardlösung: /teile und herrsche/
+
+*** Abhängigkeiten
+
+- Methode/Klasse/Komponente/Codestück feiner unterteilen in
+  - testbaren Teil
+  - nicht (einfach) testbaren Teil
+- testbaren Teil testen!
+  - Durchführen Datenbank-Requests fällt halt weg
+  - Verarbeitung künstliches ~ResultSet~ trotzdem testbar
+
+Benötigte Abhängigkeiten ersetzen durch Dummys/Stubs/Mocks.
+
+#+BEGIN_NOTES
+Beispiel für statische Helper: Instanziierten Wrapper bauen, der kann
+dann weggestubt werden.
+#+END_NOTES
+
+*** Innereien
+
+#+BEGIN_QUOTE
+Ich würde das gerne testen, aber dafür müsste ich an $Detail herankommen,
+das soll aber intern bleiben dran.
+#+END_QUOTE
+
+#+ATTR_REVEAL: :frag t
+- Unit-Tests sind /keine/ Black-Box-Tests
+- Tests der Innereien sind erlaubt
+- Zugriffe darauf auch
+
+*** Innereien
+
+Standardlösung: /Sichtbarkeit erhöhen/
+
+- Problem
+  - ~private~-Variable für Abhängigkeit
+  - gefüllt per ~@Inject~ zur Laufzeit
+
+- Lösung
+  - Sichtbarkeit auf ~package~ erhöhen
+  - Test kann direkt ein Dummy/Stub/Mock setzen
+  - Injection-Framework muss nicht für den Test initialisiert werden
+
+** Test your tests
+
+#+BEGIN_QUOTE
+Schöne Unit-Tests haben Sie da, wäre doch schade, wenn die gar nichts tun.
+#+END_QUOTE
+
+- 100% Codeabdeckung == sinnvolle Tests?
+
+*** Beispielcode
+
+#+BEGIN_SRC java
+  private int calc(int a, b, c) {
+      int d = a + b * c;
+      int e = a * b + c;
+      int f = d * e;
+      for (int i = 0; i < c; i++) {
+          f += a;
+          e += d--;
+      }
+      return 3;
+  }
+#+END_SRC
+
+*** Beispieltest
+
+#+BEGIN_SRC java
+  @Test
+  public void testCalc() {
+      // given
+      int a = 3;
+      int b = 2;
+      int c = 1;
+      
+      // when
+      int result = calc(a, b, c);
+      
+      // then
+      assertThat(new Date(), notNullValue());
+  }
+#+END_SRC
+
+- Test grün
+- Codeabdeckung 100%
+- Testaussage == 0
+
+*** Mutation Testing
+- /mutiert/ den Code:
+  - Bedingungen umdrehen
+  - Methodenaufrufe weglassen
+  - ~return null~ statt Objekten (und ~RuntimeException~ statt ~null~)
+  - usw.
+- nur eine Änderung je Mutation
+  - viele! Mutationen
+- jede Mutation wird getestet
+- grüner Test -> Problem!
+
+- Java: [[http://pitest.org][PIT mutation testing]]
+- Perl: [[https://metacpan.org/pod/Devel::Mutator][Devel::Mutator]]
+* Clean Code
+#+BEGIN_QUOTE
+Der nächste Rewrite kommt bestimmt.
+#+END_QUOTE
+
+- denn: je schlimmer der Code, um so teurer jede Änderung
+- irgendwann ist Wegwerfen und Neumachen billiger
+- lässt sich das verhindern?
+  - nein!
+  - aber deutlich verzögern
+
+** Nichtfunktionale Anforderungen
+
+Code sollte…
+
+- gut lesbar
+- sprechend
+- leicht zu erweitern
+- wartungsfreundlich
+- so einfach wie möglich
+- so kompliziert wie nötig
+
+…sein.
+
+Dann klappt das auch mit der Haltbarkeit.
+
+** Clean-Code-Toolbox
+
+Ähnlich den bekannten Design-Patterns gibt es auch im
+Clean-Code-Bereich verschiedene Prinzipien und Techniken für bestimmte
+Situationen, aus denen man sich nach Bedarf bedienen kann und die man
+gezielt üben, ausprobieren und lernen kann.
+
+Eine schöne Sammlung der einzenen Prinzipien findet sich auf [[http://clean-code-developer.de/][Clean
+Code Developer]] in der Auflistung der einzelnen Grade.
+
+** Pfadfinderregel
+
+#+BEGIN_QUOTE
+Hinterlasse den Zeltplatz sauberer, als Du ihn vorgefunden hast.
+#+END_QUOTE
+
+Das gilt auch für Code.  Und wenn man sich eh gerade genau hier
+eingelesen hat, weil man einen Bug gesucht oder etwas erweitert hat,
+kann man auch nochmal fünf Minuten investieren, statt nur den Kopf zu
+schütteln.
+
+- nur /Refactoring/, keine Funktionserweiterungen
+
+** don’t repeat yourself (DRY)
+Wiederholungen zu vermeiden ist ein Grundanliegen der Informatik,
+sonst würden wir alle noch direkt mit Maschinencode arbeiten.
+
+- Duplikate können bei Änderungen vergessen oder übersehen werden.
+  - daher: Code in Methoden/Klassen auslagern und mehrfach aufrufen
+  - Nebeneffekt: Methodenaufrufe sind meist kürzer und übersichtlicher
+    und haben eine höhere Abstraktionsebene (fachliche Funktion)
+- Der Aufruf vorhandener Methoden ist schneller als den Code selbst neu
+  zu schreiben und neu zu testen.
+
+#+BEGIN_NOTES
+Wikipedia sagt: Das Gegenteil ist /WET/:
+- write everything twice
+- we enjoy typing
+- waste everyone's time
+#+END_NOTES
+
+** don’t lie
+Eine Variable/Methode/Klasse sollte möglichst passend benamst sein.
+
+- Bei einem Aufruf ~konto.getKontonummer()~ erwartet niemand, dass im
+  Hintergrund ein neues Konto angelegt wird, wenn noch keines
+  existiert.
+- Bei ~nettoPreis = nettoPreis * 1.19~ ist irgendwas faul.
+
+#+BEGIN_NOTES
+Benamsungsschema:
+| Typ      | public/global scope | private/local scope |
+|----------+---------------------+---------------------|
+| Method   | short and generic   | long and detailed   |
+| Variable | long and detailed   | short and generic   |
+
+- ~public static final String MAIN_HEADQUARTERS_STREET_ADDRESS = "…";~
+- ~for (int i=0; i<max; i++) {~
+- ~public BigDecimal add(BigDecimal other)~
+- ~private double getDefaultTaxFactorIfNoProductTypeExists()~
+#+END_NOTES
+
+** Single Responsibility Principle
+
+Eine Klasse/Methode/Komponente sollte möglichst immer nur eine Sache
+tun.
+
+- Code wird einfacher, kürzer und verständlicher
+- Code wird wiederverwendbarer, da weniger Abhängigkeiten bestehen
+
+Mögliche Hinweise auf Probleme:
+- ein /und/ im Methodennamen: ~calculateAreaAndDrawCircle()~
+- wenn das Arrange im Unit-Test ausartet
+
+** no comment
+
+#+BEGIN_QUOTE
+Clean Code verbietet alle Kommentare
+#+END_QUOTE
+
+- nicht ganz richtig
+- aber nahe dran:
+  - sinnvolles behalten
+  - unnützes weg
+
+*** exhibit 1
+
+#+BEGIN_SRC perl
+  # zähle $i um 1 hoch
+  $i++;
+#+END_SRC
+
+#+ATTR_REVEAL: :frag t
+- Informationsgehalt == 0
+- verstößt gegen /DRY/
+
+*** exhibit 2
+
+#+BEGIN_SRC perl
+# zähle $i um 1 hoch
+# $i++;
+#+END_SRC
+
+#+ATTR_REVEAL: :frag t
+- Informationsgehalt weiterhin 0
+- zusätzliche Verwirrung: warum auskommentiert?
+
+*** exhibit 3
+
+#+BEGIN_SRC perl
+  # zähle $i um 1 hoch
+  $textureCount++;
+#+END_SRC
+
+#+ATTR_REVEAL: :frag t
+- was mag hier passiert sein?
+  - womöglich Refactoring
+  - erwischt nicht unbedingt die Kommentare…
+- Erkenntnis: Kommentare veralten
+
+*** exhibit 4
+
+#+BEGIN_SRC perl
+  # zähle $i um 1 hoch
+  $i+=10;
+#+END_SRC
+
+#+ATTR_REVEAL: :frag t
+- was stimmt denn nun?
+- verstößt gegen /don’t lie/
+
+*** exhibit 5
+
+#+BEGIN_SRC perl
+  # ermittelt die Artikelteilnummer
+  # aus dem Identifikationsstring
+  if (/^AKR-[0-9A-F]{8}-([0-9X])-999$)/) {
+      return $1;
+  }
+#+END_SRC
+
+#+ATTR_REVEAL: :frag t
+- echte Information!
+  - sofern inhaltlich richtig…
+- aber unbedingt benötigt?
+
+*** exhibit 5a
+
+#+BEGIN_SRC perl
+  if ($ident_str =~ /^AKR-[0-9A-F]{8}-([0-9X])-999$)/) {
+      my $artikel_teil_nr = $1;
+      return $artikel_teil_nr;
+  }
+#+END_SRC
+
+#+ATTR_REVEAL: :frag t
+- Variablennamen ersetzen Kommentare
+
+*** exhibit 5b
+
+#+BEGIN_SRC perl
+  sub get_artikel_teil_nr_from_ident_str {
+      if (/^AKR-[0-9A-F]{8}-([0-9X])-999$)/) {
+          return $1;
+      }
+  }
+#+END_SRC
+
+#+ATTR_REVEAL: :frag t
+- Methodennamen ersetzen Kommentare
+
+*** APIs
+
+- API-Kommentare an öffentlichen Methoden sind natürlich sinnvoll!
+- hier gibt es auch Toolunterstützung
+  - IDEs können beim Refactoring JavaDoc automatisch anpassen
+  - JavaDoc meckert z.B. fehlende Parameter-Doku an
+    - das deckt umbenannte Parameter auf
+
+** Refactoring
+bedeutet, den Code umzubauen, ohne seine fachliche Funktion zu
+verändern, um z.B. die zuvor genannten Prinzipien einzuhalten.  Im
+Idealfall unterstützt dabei die IDE.
+
+- Globales Umbenennen von Variablen, Methoden, Klassen, Modulen oder Dateien
+- Verschieben von Code von/in Methoden, Klassen, Module…
+- Anpassen von Parameterleisten
+
+(Unit-)Tests geben Sicherheit beim Refactoring.
+** und vieles mehr
+- YAGNI :: you ain’t gonna need it
+- IOSP :: Integration Operation Segregation Principle
+- FCoI :: Favor Composition over Inheritance
+- … ::
+* im Team
+
+#+BEGIN_QUOTE
+Programmieren ist Kommunikation
+#+END_QUOTE
+
+Wer das mal intensiv ausprobieren will:
+Der [[http://coderetreat.org/][Global Day of Coderetreat]] ist dieses Jahr am 18. November.
+Veranstaltung in der Nähe suchen und hin!
+
+** Grundsätzlich
+
+Bei allen Themen hier im Vortrag gilt:
+
+- im Team drüber reden
+- im Team entscheiden
+
+Im Idealfall kann man Tools und Prozesse beeinflussen.
+Vielleicht nicht immer alles, aber irgendwas geht immer.
+
+** Coding Style
+
+betrifft alles von Tabulatoren und Leerzeichen über Klammern und
+Variablennamen.  Sprecht mir nach:
+
+#+BEGIN_QUOTE
+Es gibt kein Falsch und Richtig.
+#+END_QUOTE
+
+- persönliche Vorlieben
+- Gefahr von Bikeshedding
+
+*** das ist jetzt nur meine Meinung…
+
+- hauptsache /irgendeine/ Vorgabe
+  - auch wenn ich es persönlich anders machen würde
+- /Format on Save/ ist eine feine Sache
+  - soll das Tool das machen, ich muss Code schreiben
+  - Obacht: Autoformat mit verschiedenen Formaten bedeutet Chaos beim
+    Diff-Lesen!  Wenn, dann /genau eine/ Formatierung.
+
+#+BEGIN_NOTES
+*Tooling-Wunsch*
+- beim Auschecken oder Öffnen im Editor Autoformat nach persönlicher Vorliebe
+- beim Einchecken oder Abspeichern wieder nach Gruppenvorgabe formatieren
+Gibt’s das schon in fertig?
+#+END_NOTES
+
+** Code Reviews
+
+sind, wenn man sich gezielt den Code von jemand anderem anguckt, egal
+ob alleine oder gemeinsam.
+
+- streut Wissen über den Code im Team
+- führt mittelfristig zu ähnlicherem Programmierstil
+
+*** Code Reviews
+
+- konstruktiv kritisieren (naheliegend, aber nicht immer einfach)
+- gemeinsam Kriterien erarbeiten, was zu reviewen ist
+  - Benamsung?
+  - Coding Style?
+  - Designentscheidungen?
+  - Sprachmittel? (z.B. ~for()~ vs. Iteratoren vs. Streams)
+
+** Pair Programming
+
+ist, wenn man zu zweit programmiert.  Gleichzeitig.  An einem Gerät.
+
+- nicht zu lange/zu oft (schlaucht ungemein!)
+  - ggf. auf schwierigen oder kritischen Code beschränken?
+
+- teilt viel unbewusstes Nebenbei-Wissen
+  - „ach so machst Du das, das ist ja viel einfacher!“
+
+#+BEGIN_NOTES
+- mindestens /Pair Debugging/ hat jeder wohl schon mal gemacht
+
+- ideal, um beim gemeinsamen Lösen einer Kata in eine neue
+  Programmiersprache zu schnuppern
+#+END_NOTES
+
+*** Umfeld
+
+- zwei Stühle
+- Maus und Tastatur
+- Zeit nehmen (keine Störungen)
+- persönliche Sonderlocken abschalten
+  - Tastaturlayout, Keybindings, Windowmanager, …
+    - es sei denn, man will genau das jemand anderem beibringen, dafür
+      ist das Format nämlich ideal
+
+*** Driver/Navigator
+
+- Driver ::
+  - hat Tastatur und Maus
+  - ist primär für Tastenkürzel und effiziente Eingabe (Cut&Paste
+    etc.) zuständig
+  - kümmert sich primär um die aktuelle Klasse/Methode/Datei
+  - darf natürlich auch mitdenken, wenn er Luft hat
+
+*** Driver/Navigator
+
+- Navigator ::
+  - hat den Überblick
+  - denkt voraus
+  - guckt links und rechts („…wenn wir das hier ändern, dann geh danach
+    mal in die andere Klasse, da müssen wir dann ja noch…“)
+
+*** Driver/Navigator
+
+- Rollen regelmäßig tauschen
+  - z.B. alle 5-10 Minuten
+
+- Kommunikation der aktuellen Situation anpassen
+  - high-level, wenn der Driver gut drauf ist
+    - „extrahiere das mal als Methode und vertausche die Parameter“
+  - low-level, falls der Driver mal auf dem Schlauch steht
+    - „mach da mal Rechtsklick und wähle den ersten Menüpunkt“
+
+*** Mob Programming
+
+ist dann, wenn ein Driver für mehrere Navigatoren (den /Mob/) tippt.  Dabei kann der
+Driver auch länger oder dauerhaft in seiner Rolle bleiben.
+
+Alternativ kann man auch die Pairs durchrotieren, das ist aber
+kein /Mob Programming/ mehr:
+
+#+BEGIN_SRC perl
+push @group, $driver;
+($driver, $navigator) = ($navigator, shift @group);
+#+END_SRC
+
+** Coding Dojos
+
+sind ein Format, in dem man gemeinsam oder in Gruppen (z.B. /Pair
+Programming/) Übungsaufgaben löst (also /Katas/), um sich
+auszutauschen, fortzubilden oder etwas zu vertiefen.
+
+- vom produktiven Tagesgeschäft trennen
+- auch mal was ausprobieren
+  - Fehlschläge sind erlaubt
+- Ergebnisse löschen
+  - „what happens in the dojo, stays in the dojo“
+
+* Test Driven Development
+
+ist eine Entwicklungstechnik, bei der man sich der gewünschten
+Funktionalität Schritt für Schritt annähert, ohne sich vorher viele
+Gedanken um die Architektur zu machen.  Die entwickelt sich einfach
+mit.
+
+- es wird nur Code geschrieben, der tatsächlich benötigt wird
+- der geschriebene Code ist von vorneherein durch Unit-Tests abgedeckt
+
+/TDD/ lässt sich prima mit /Katas/ ausprobieren und lernen.
+
+** Der TDD-Zyklus
+
+Die Entwicklung nach /TDD/ erfolgt in vielen kleinen Iterationen nach
+diesem Ablauf:
+
+- Roter Pfad :: neuer Testfall, Funktionalität existiert noch nicht,
+   Testfall muss rot sein
+
+- Grüner Pfad :: minimale Menge Code implementieren, um Testfall grün
+   zu bekommen
+
+- Refactoring :: nur bei grünen Tests, Funktionalität muss
+   unverändert bleiben; meist zeitlich größter Anteil
+
+#+BEGIN_NOTES
+Ziel: Während die Tests spezifischer werden, wird der Code generischer.
+#+END_NOTES
+
+** Schrittweite
+
+beschreibt den Umfang der Funktionalität, die in einer Iteration
+rot/grün/Refactoring erstellt wird.  Wächst meist, bis sie zu groß
+wird, man auf die Nase fällt und erstmal wieder kleiner weitermacht.
+Repeat :-)
+  
+*** Baby steps
+
+- übertrieben klein
+- gut zum Üben von /TDD/
+
+*** kleinere Schritte
+
+- einfaches „zurück auf Los“ bei „funktioniert so nicht“
+- Unterbrechungen/Pausen/Feierabend sind oft und zeitnah möglich
+  (Tipp: roten Test stehenlassen (nicht einchecken), dann weiß man
+  später genau, wo man gerade war)
+
+*** größere Schritte 
+
+- weniger Tests
+- längeres kontinuierliches Hacken
+- „zurück auf Los“ erwischt auch viel „guten“ Code
+- Refactoring als großer Brocken statt kleine Häppchen
+
+** Roter Pfad
+
+- jeder Test /muss/ am Anfang einmal fehlschlagen:
+  - wäre er grün, wäre die Teilanforderung schon implementiert und der
+    Test bringt uns nicht weiter, da er keine neue Funktionalität
+    /treibt/
+  - wird er nicht rot, erkennt man sofort, wenn er vielleicht gar
+    nicht ausgeführt wird (z.B. unter Java das ~@Test~ vergessen oder
+    sowas)
+
+*** Roter Pfad
+
+ - das Ermitteln des nächsten sinnvollen Tests ist nicht immer ganz
+   einfach
+   - Erfahrung, Intuition, Bauchgefühl?  Keine sinnvollen Methodiken
+     parat…
+   - Vorgehen ähnlich /minimal viable product/, aber kleinschrittiger,
+     z.B. bei einer Suchfunktion in einer Datenbank:
+     - erstmal nur Vorname
+     - dann auch Nachname
+     - Groß- und Kleinschreibung ignorieren
+     - Jokerzeichen
+
+** Grüner Pfad
+
+- /obvious implementation/: Die Lösung ist so offensichtlich, man
+  schreibt sie einfach hin.  (Geht gerne schief, aber dafür hat man
+  den Test.)
+
+- /fake it/: Behelfsweise schreibt man das erwartete Ergebnis erstmal
+  direkt so hin.  (Ja, ehrlich!)
+
+*** Grüner Pfad
+
+ - /triangulation/: Wenn sich mehrere /fake it/-Ergebnisse angesammelt
+   haben, wird es Zeit, eine generelle Lösung zu bauen, statt auf immer
+   längere ~switch/case~-Statements zu setzen.  Merke:
+   - einmal ist keinmal
+   - zweimal ist Zufall
+   - dreimal ist ein Pattern
+
+#+BEGIN_NOTES
+Begriffsverwirrung /Triangulation/ -> hier? beim grünen Pfad?
+#+END_NOTES
+
+** Refactoring
+
+- /nur/ wenn alle Tests grün sind
+  - haut man mit dem Refactoring irgendwas kaputt, merkt man das, weil
+    Tests plötzlich rot werden
+- das volle /Clean Code/-Programm kommt zun Einsatz
+  - Doppelungen entfernen (/DRY/)
+  - Variablen und Methoden umbenennen (/don't lie/)
+  - Klassen und Methoden extrahieren (/SRP/)
+  - …
+
+* for further study
+
+- im Blog:
+  - [[https://www.cgarbs.de/blog/archives/1140-Test-Driven-Development-Teil-1-von-3.html][Test Driven Development]]
+  - [[https://www.cgarbs.de/blog/archives/1151-Continuous-Integration-mit-GitHub.html][Continuous Integration mit GitHub]]
+
+- auf GitHub:
+  - [[https://github.com/mmitch/tdd-starter][TDD-Startpaket]] (leere Workspaces für verschiedene Sprachen)
+  - [[https://github.com/mmitch/kata-simple-poker-hands][Simple Poker Hands Kata]]
+  - [[https://github.com/mmitch/kata-christmas-tree][Weihnachtsbaum-Kata]]
+
+* Ende
+
+#+BEGIN_CENTER
+Danke!
+#+END_CENTER
+
+#+BEGIN_CENTER
+Fragen?
+#+END_CENTER
+
+# Local Variables:
+# eval: (require 'ox-reveal)
+# End:
