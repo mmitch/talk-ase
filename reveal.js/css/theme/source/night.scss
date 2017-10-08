@@ -2,6 +2,10 @@
  * Black theme for reveal.js.
  *
  * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ *
+ * Some additional changes:
+ * Copyright (C) 2017 Christian Garbs <mitch@cgarbs.de>
+ * reveal.js is MIT licensed, so let this also be MIT licensed
  */
 
 
@@ -28,7 +32,47 @@ $headingLetterSpacing: -0.03em;
 $headingTextTransform: none;
 $selectionBackgroundColor: #e7ad52;
 
+$headingColor: darken(  $linkColor, 5% );
 
 // Theme template ------------------------------
 @import "../template/theme";
 // ---------------------------------------------
+
+.reveal h1        { color: #fff; font-size: 2.2em; }
+.reveal h2.author { color: #aaa; }
+.reveal h2.date   { color: #666; }
+
+.reveal pre {
+    box-shadow: none;
+    padding: 4px 0.7em;
+    border: 2px #555 solid;
+    border-radius: 8px;
+}
+
+.reveal blockquote {
+    box-shadow: none;
+    padding: 2px 0.7em;
+    border: none;
+    border-radius: 8px;
+}
+
+.reveal code {
+    background: lighten( $backgroundColor, 5% );
+}
+
+.reveal .slides p {
+    text-align: left;
+}
+
+.reveal span.todo {
+    color: red;
+}
+
+@for $i from 1 through 4 {
+    .reveal .slides h#{$i} { text-align: center; }
+    .reveal span.section-number-#{$i} { font-size: 75%; }
+}
+
+.reveal .slides .org-center p {
+    text-align: center;
+}
