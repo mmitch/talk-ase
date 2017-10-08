@@ -1,0 +1,81 @@
+/**
+ * fancy CRT party style theme for talk-ase
+ *
+ * Copyright (C) 2017 Christian Garbs <mitch@cgarbs.de>
+ * MIT license
+ * 
+ * based on the 'simple.scss' base theme, which is: 
+ *
+ *   A simple theme for reveal.js presentations, similar
+ *   to the default theme. The accent color is darkblue.
+ *
+ *   This theme is Copyright (C) 2012 Owen Versteeg, https://github.com/StereotypicalApps. It is MIT licensed.
+ *   reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+
+// Include theme-specific fonts
+@font-face { font-family: VGA9; src: url(../../../font/PxPlus_IBM_VGA9.ttf); } // 16px
+@font-face { font-family: IBM3270; src: url(../../../font/Px437_IBM_3270pc.ttf); } // 14px
+@font-face { font-family: ATIsmall; src: url(../../../font/Px437_ATI_SmallW_6x8.ttf); } // 8px
+
+// Override theme settings (see ../template/settings.scss)
+$mainFont: 'IBM3270', monospace;
+$monoFont: 'IBM3270', monospace;
+$mainColor: #0d0;
+$headingFont: 'VGA9', monospace;
+$headingColor: #dd0;
+$heading1TextShadow: 0px -2px 0px #00f; //none;
+$headingTextShadow: 0px 2px 2px #f00; //none;
+$headingTextTransform: none;
+$backgroundColor: #008;
+$realLinkColor: #d0d;
+$realLinkColorHover: lighten( $realLinkColor, 20% );
+$selectionBackgroundColor: rgba(0, 0, 0, 0.99);
+
+$mainFontSize: 38px;
+$heading1Size: 48px;
+$heading2Size: 48px;
+$heading3Size: 48px;
+$heading4Size: 48px;
+
+$linkColor: #00f;
+$linkColorHover: lighten( $linkColor, 20% );
+
+body {
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+}
+
+.reveal .slide-number {
+    font-family: 'ATIsmall';
+    font-size: 8px;
+}
+
+.reveal .control {
+    color: #00f;
+}
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
+
+h2.author {
+    color: #ddd;
+    text-shadow: -1px 0px 0px #f0f;
+}
+
+h2.date {
+    color: #ddd;
+    text-shadow: 1px 0px 0px #0f0;
+}
+
+// GLOBAL FIXUPS
+@import "mitchs-fixs";

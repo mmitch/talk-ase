@@ -1,0 +1,78 @@
+.reveal li, .reveal dt {
+    padding-top: 8px;
+}
+
+.reveal ul {
+    list-style-type: none;
+    margin: 0;
+}
+
+.reveal ul ul, .reveal ul ul ul {
+    list-style-type: none;
+}
+
+.reveal ul li:before {
+    content: '\263b \a0'; // 263a / 263b
+    color: #ddd;
+    margin-left: -1.1em;
+}
+
+.reveal ul ul li:before {
+    content: '\263a \a0'; // 263a / 263b
+    margin-left: -1.1em;
+}
+
+.reveal ul ul ul li:before {
+    content: '\263b \a0'; // 263a / 263b
+    margin-left: -1.1em;
+}
+
+.reveal a {
+    color: $realLinkColor;
+}
+
+.reveal a:hover {
+    color: $realLinkColorHover;
+}
+
+.reveal pre {
+    font-family: $mainFont;
+    font-size: 0.8em;
+    box-shadow: none;
+    padding: 2px 8px;
+    border: none; // 4px #888 solid;
+    border-radius: 8px;
+    background: darken( $backgroundColor, 20% );
+}
+
+.reveal blockquote {
+    font-family: $mainFont;
+    font-size: 0.8em;
+    box-shadow: none;
+    padding: 2px 1em;
+    border: none; // 4px #888 solid;
+    border-radius: 8px;
+    background: lighten( $backgroundColor, 5% );
+}
+
+.reveal code {
+    font-family: $monoFont;
+    background: lighten( $backgroundColor, 5% );
+}
+
+.reveal .slides p {
+    text-align: left;
+}
+
+.reveal span.todo {
+    color: red;
+}
+
+@for $i from 1 through 4 {
+    .reveal .slides h#{$i} { text-align: center; }
+    .reveal span.section-number-#{$i} { font-size: 75%; }
+}
+
+.reveal .slides .org-center p {
+    text-align: center;
+}
