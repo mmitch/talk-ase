@@ -1,35 +1,61 @@
 /**
- * Black theme for reveal.js.
+ * fancy CRT party style theme for talk-ase
  *
- * Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
- *
- * Some additional changes:
  * Copyright (C) 2017 Christian Garbs <mitch@cgarbs.de>
- * reveal.js is MIT licensed, so let this also be MIT licensed
+ * MIT license
+ * 
+ * based on the 'simple.scss' base theme, which is: 
+ *
+ *   A simple theme for reveal.js presentations, similar
+ *   to the default theme. The accent color is darkblue.
+ *
+ *   This theme is Copyright (C) 2012 Owen Versteeg, https://github.com/StereotypicalApps. It is MIT licensed.
+ *   reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
  */
-@import url(https://fonts.googleapis.com/css?family=Montserrat:700);
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic);
+@font-face {
+  font-family: VGA9;
+  src: url(../../../font/PxPlus_IBM_VGA9.ttf); }
+
+@font-face {
+  font-family: IBM3270;
+  src: url(../../../font/Px437_IBM_3270pc.ttf); }
+
+@font-face {
+  font-family: ATIsmall;
+  src: url(../../../font/Px437_ATI_SmallW_6x8.ttf); }
+
+body {
+  font-smooth: never;
+  -webkit-font-smoothing: none; }
+
+.reveal .slide-number {
+  font-family: 'ATIsmall';
+  font-size: 8px; }
+
+.reveal .control {
+  color: #00f; }
+
 /*********************************************
  * GLOBAL STYLES
  *********************************************/
 body {
-  background: #111;
-  background-color: #111; }
+  background: #008;
+  background-color: #008; }
 
 .reveal {
-  font-family: "Open Sans", sans-serif;
-  font-size: 40px;
+  font-family: "IBM3270", monospace;
+  font-size: 38px;
   font-weight: normal;
-  color: #eee; }
+  color: #0d0; }
 
 ::selection {
   color: #fff;
-  background: #e7ad52;
+  background: rgba(0, 0, 0, 0.99);
   text-shadow: none; }
 
 ::-moz-selection {
   color: #fff;
-  background: #e7ad52;
+  background: rgba(0, 0, 0, 0.99);
   text-shadow: none; }
 
 .reveal .slides > section,
@@ -47,29 +73,29 @@ body {
 .reveal h5,
 .reveal h6 {
   margin: 0 0 20px 0;
-  color: #e4a23c;
-  font-family: "Montserrat", Impact, sans-serif;
+  color: #dd0;
+  font-family: "VGA9", monospace;
   font-weight: normal;
   line-height: 1.2;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   text-transform: none;
-  text-shadow: none;
+  text-shadow: 0px 2px 2px #f00;
   word-wrap: break-word; }
 
 .reveal h1 {
-  font-size: 3.77em; }
+  font-size: 48px; }
 
 .reveal h2 {
-  font-size: 2.11em; }
+  font-size: 48px; }
 
 .reveal h3 {
-  font-size: 1.55em; }
+  font-size: 48px; }
 
 .reveal h4 {
-  font-size: 1em; }
+  font-size: 48px; }
 
 .reveal h1 {
-  text-shadow: none; }
+  text-shadow: 0px -2px 0px #00f; }
 
 /*********************************************
  * OTHER
@@ -212,20 +238,20 @@ body {
  * LINKS
  *********************************************/
 .reveal a {
-  color: #e7ad52;
+  color: #00f;
   text-decoration: none;
   -webkit-transition: color .15s ease;
   -moz-transition: color .15s ease;
   transition: color .15s ease; }
 
 .reveal a:hover {
-  color: #f3d7ac;
+  color: #6666ff;
   text-shadow: none;
   border: none; }
 
 .reveal .roll span:after {
   color: #fff;
-  background: #d08a1d; }
+  background: #0000b3; }
 
 /*********************************************
  * IMAGES
@@ -233,7 +259,7 @@ body {
 .reveal section img {
   margin: 15px 0px;
   background: rgba(255, 255, 255, 0.12);
-  border: 4px solid #eee;
+  border: 4px solid #0d0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); }
 
 .reveal section img.plain {
@@ -247,7 +273,7 @@ body {
 
 .reveal a:hover img {
   background: rgba(255, 255, 255, 0.2);
-  border-color: #e7ad52;
+  border-color: #00f;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.55); }
 
 /*********************************************
@@ -255,31 +281,31 @@ body {
  *********************************************/
 .reveal .controls .navigate-left,
 .reveal .controls .navigate-left.enabled {
-  border-right-color: #e7ad52; }
+  border-right-color: #00f; }
 
 .reveal .controls .navigate-right,
 .reveal .controls .navigate-right.enabled {
-  border-left-color: #e7ad52; }
+  border-left-color: #00f; }
 
 .reveal .controls .navigate-up,
 .reveal .controls .navigate-up.enabled {
-  border-bottom-color: #e7ad52; }
+  border-bottom-color: #00f; }
 
 .reveal .controls .navigate-down,
 .reveal .controls .navigate-down.enabled {
-  border-top-color: #e7ad52; }
+  border-top-color: #00f; }
 
 .reveal .controls .navigate-left.enabled:hover {
-  border-right-color: #f3d7ac; }
+  border-right-color: #6666ff; }
 
 .reveal .controls .navigate-right.enabled:hover {
-  border-left-color: #f3d7ac; }
+  border-left-color: #6666ff; }
 
 .reveal .controls .navigate-up.enabled:hover {
-  border-bottom-color: #f3d7ac; }
+  border-bottom-color: #6666ff; }
 
 .reveal .controls .navigate-down.enabled:hover {
-  border-top-color: #f3d7ac; }
+  border-top-color: #6666ff; }
 
 /*********************************************
  * PROGRESS BAR
@@ -288,35 +314,69 @@ body {
   background: rgba(0, 0, 0, 0.2); }
 
 .reveal .progress span {
-  background: #e7ad52;
+  background: #00f;
   -webkit-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   -moz-transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
   transition: width 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
 
-.reveal h1 {
-  color: #fff;
-  font-size: 2.2em; }
+h2.author {
+  color: #ddd;
+  text-shadow: -1px 0px 0px #f0f; }
 
-.reveal h2.author {
-  color: #aaa; }
+h2.date {
+  color: #ddd;
+  text-shadow: 1px 0px 0px #0f0; }
 
-.reveal h2.date {
-  color: #666; }
+.reveal li, .reveal dt {
+  padding-top: 8px; }
+
+.reveal ul {
+  list-style-type: none;
+  margin: 0; }
+
+.reveal ul ul, .reveal ul ul ul {
+  list-style-type: none; }
+
+.reveal ul li:before {
+  content: '\263b \a0';
+  color: #ddd;
+  margin-left: -1.1em; }
+
+.reveal ul ul li:before {
+  content: '\263a \a0';
+  margin-left: -1.1em; }
+
+.reveal ul ul ul li:before {
+  content: '\263b \a0';
+  margin-left: -1.1em; }
+
+.reveal a {
+  color: #d0d; }
+
+.reveal a:hover {
+  color: #ff44ff; }
 
 .reveal pre {
+  font-family: "IBM3270", monospace;
+  font-size: 0.8em;
   box-shadow: none;
-  padding: 4px 0.7em;
-  border: 2px #555 solid;
-  border-radius: 8px; }
+  padding: 2px 8px;
+  border: none;
+  border-radius: 8px;
+  background: #000022; }
 
 .reveal blockquote {
+  font-family: "IBM3270", monospace;
+  font-size: 0.8em;
   box-shadow: none;
-  padding: 2px 0.7em;
+  padding: 2px 1em;
   border: none;
-  border-radius: 8px; }
+  border-radius: 8px;
+  background: #0000a2; }
 
 .reveal code {
-  background: #1e1e1e; }
+  font-family: "IBM3270", monospace;
+  background: #0000a2; }
 
 .reveal .slides p {
   text-align: left; }

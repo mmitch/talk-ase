@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<title>TDD, Clean Code, Software Craftmanship und so’n Zeug</title>
+<meta name="author" content="(mitch@cgarbs.de)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/night.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">TDD, Clean Code, Software Craftmanship und so’n Zeug</h1><h2 class="author">mitch@cgarbs.de</h2><h2 class="date">Hackover 2017</h2>
+</section>
+<section id="table-of-contents">
+<div id="table-of-contents">
+<h2>Inhaltsverzeichnis</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#/slide-orgf5a2a19">1. disclaimer</a></li>
+<li><a href="#/slide-orgdbfb83f">2. ad hominem</a></li>
+<li><a href="#/slide-org7d89e45">3. Software Craftmanship</a></li>
+<li><a href="#/slide-orge3267cc">4. Infrastuktur</a></li>
+<li><a href="#/slide-org7bdeb33">5. Tests</a></li>
+<li><a href="#/slide-org9e0272e">6. Clean Code</a></li>
+<li><a href="#/slide-org7fa2bdc">7. im Team</a></li>
+<li><a href="#/slide-org83d7c4a">8. Test Driven Development</a></li>
+<li><a href="#/slide-org1ed0d28">9. for further study</a></li>
+<li><a href="#/slide-org7b73a44">10. Ende</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<section id="slide-orgf5a2a19">
+<h2 id="orgf5a2a19"><span class="section-number-2">1</span> disclaimer</h2>
+<ul>
+<li>Es gibt Literatur zu den Themen.  Ich habe sie nicht gelesen.</li>
+<li>Das alles stammt aus Praxiserfahrung und aus dem Internet.</li>
+<li>Dargestellt aus Entwicklersicht für Entwickler.</li>
+<li>Ich bin nur ein Quereinsteiger.</li>
+
+</ul>
+
+<p>
+Have fun!
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgdbfb83f">
+<h2 id="orgdbfb83f"><span class="section-number-2">2</span> ad hominem</h2>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">1986</td>
+<td class="org-left">CPC 664</td>
+<td class="org-left">Locomotive Basic</td>
+</tr>
+
+<tr>
+<td class="org-right">1989</td>
+<td class="org-left">Atari ST</td>
+<td class="org-left">GfA Basic</td>
+</tr>
+
+<tr>
+<td class="org-right">1994</td>
+<td class="org-left">DOS</td>
+<td class="org-left">Turbo Pascal</td>
+</tr>
+
+<tr>
+<td class="org-right">1996</td>
+<td class="org-left">Linux</td>
+<td class="org-left">Perl, Shell</td>
+</tr>
+
+<tr>
+<td class="org-right">1998</td>
+<td class="org-left">zOS</td>
+<td class="org-left">COBOL $$</td>
+</tr>
+
+<tr>
+<td class="org-right">2000</td>
+<td class="org-left">Windows</td>
+<td class="org-left">Java $$</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org857e3e1">
+<h4 id="org857e3e1">2015: Jahr des Umsturzes</h4>
+<ul>
+<li>von Java 1.5 auf Java 8</li>
+<li><i>Continus Integration</i> kennengelernt</li>
+<li>neue Frameworks (<i>Vaadin</i> + diverse interne)</li>
+<li>in den ASE-Zaubertopf gefallen</li>
+
+</ul>
+
+<p>
+Effektiv in den letzten 2 Jahren mehr neues gelernt als die 10 Jahre
+davor.  Toll!
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org7d89e45">
+<h2 id="org7d89e45"><span class="section-number-2">3</span> Software Craftmanship</h2>
+<p>
+ist der Gedanke, Softwareentwicklung wie ein Handwerk zu betrachten
+und nicht als industrielle Massenproduktion.  Damit einher geht ein
+gewisser Qualitätsanspruch an sich selbst und seine Arbeit sowie die
+Reflexion darüber:
+</p>
+
+<ul>
+<li>Was habe ich gelernt?</li>
+<li>Was lief gut?  Was lief weniger gut?</li>
+<li>Was mache ich nochmal so?  Was lieber nicht?</li>
+
+</ul>
+
+<p>
+Diese Werte vertritt unter anderem die <a href="https://www.softwerkskammer.org/">Softwerkskammer</a>.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org10f7d56">
+<h3 id="org10f7d56"><span class="section-number-3">3.1</span> Lernen</h3>
+<p>
+Ein Weg zu Qualität ist, sich fortzubilden, und zwar auf
+verschiedensten Ebenen:
+</p>
+
+<ul>
+<li>technisches Wissen (neue Frameworks, neue Sprachen, …)</li>
+<li>Fachwissen (ggf. branchenspezifisch)</li>
+<li>Handwerkszeug (IDEs, Design-Pattern, …)</li>
+<li>Arbeitstechniken (Zeitmanagement, „Agile“, …)</li>
+<li>Softskills (Wissensvermittlung, Konfliktmanagement, …)</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org99fd09d">
+<h3 id="org99fd09d"><span class="section-number-3">3.2</span> Katas</h3>
+<p>
+sind kleine, überschaubare Programmieraufgaben, die sich flexibel
+verwenden lassen, um Dinge auszuprobieren oder zu vertiefen:
+</p>
+
+<ul>
+<li>Entwicklungstechniken (Refactoring, Design-Patterns, Test Driven Development,
+Type Driven Development, …)</li>
+<li>Programmiersprachen oder -konzepte (z.B. Streams und Optionals in Java 8)</li>
+<li>IDEs (ohne Maus, vi-Keybindings, …)</li>
+<li>Frameworks (ggf. auch nur neue Features in neuen Versionen)</li>
+<li>das neue Keyboardlayout</li>
+<li>schon mal <i>Pair Programming</i> gemacht?</li>
+
+</ul>
+
+</section>
+<section id="slide-org9906ad4">
+<h4 id="org9906ad4">Warum Katas?</h4>
+<ul>
+<li>Lernen durch Machen bleibt am besten hängen</li>
+<li>Ausprobieren festigt - Fehler mal zulassen
+<ul>
+<li>das geht aber nicht im Arbeitsalltag!</li>
+<li>ergo: Zeiten und Räume dafür schaffen</li>
+
+</ul></li>
+
+</ul>
+
+<blockquote nil>
+<p>
+Wir haben keine Zeit, die Axt zu schärfen, wir müssen Bäume fällen.
+</p>
+</blockquote>
+
+<p>
+Es lohnt sich, sich die Zeit zu nehmen!
+</p>
+
+</section>
+<section id="slide-orge369599">
+<h4 id="orge369599">Constraints</h4>
+<p>
+machen Katas interessanter, thembenbezogener und schwieriger.  Damit
+lohnt dann auch eine Wiederholung.  Nicht für Produktivcode gedacht!
+</p>
+
+<ul>
+<li>keine Maus (IDE kennenlernen)</li>
+<li>nur Methoden ohne Rückgabeparameter</li>
+<li>keine einfachen Datentypen erlaubt (-&gt; <i>Type Driven Development</i>)</li>
+<li>keine Methode länger als 5 Zeilen</li>
+<li>nur eine Blocktiefe pro Methode</li>
+<li>…</li>
+
+</ul>
+
+<p>
+Hardcore-Modus: <a href="https://gist.github.com/bobuss/6534934">Object Calesthenics</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org33fb6e2">
+<h3 id="org33fb6e2"><span class="section-number-3">3.3</span> in extremo</h3>
+<ul>
+<li><i>Katas</i> im <i>Pair Programming</i> übers Internet mit Leuten, die man
+nicht kennt (Chatroulette Developer Edition)</li>
+
+<li>„Software-Walz“: „Hallo $FIRMA, ihr zahlt mir Mittagessen und ein
+Hotelzimmer, dafür mache ich zwei Tage lang je drei <i>Pair
+Programming</i>-Sessions mit euren Entwicklern, dann ziehe ich weiter.“</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orge3267cc">
+<h2 id="orge3267cc"><span class="section-number-2">4</span> Infrastuktur</h2>
+<p>
+heißt dieses Kapitel, weil es hier um zentrale Dinge geht, die der
+Entwickler zwar braucht, aber nicht unbedingt selbst in der Hand hat.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgd029492">
+<h3 id="orgd029492"><span class="section-number-3">4.1</span> Source Repository</h3>
+<p>
+ist die Stelle, an der der Quellcode zentral abgelegt wird.
+</p>
+
+<ul>
+<li>Vorteile liegen auf der Hand
+<ul>
+<li>Nachvollziehbarkeit</li>
+<li>Branching</li>
+<li>Backupfähigkeit</li>
+<li>verteiltes Arbeiten</li>
+
+</ul></li>
+<li>heutzutage <i>state of the art</i>
+<ul>
+<li>damit vmtl. sogar rechtlich relevant</li>
+
+</ul></li>
+
+</ul>
+
+<p>
+Bekannte Tools wären <a href="https://git-scm.com/">git</a>, <a href="https://subversion.apache.org/">SVN</a>, …
+</p>
+
+<aside class="notes">
+<ul>
+<li><b>Commit-Nachrichten!</b></li>
+
+<li><b>PFUI SVN!</b>
+<ul>
+<li>Merge auf eine Datei, die zwischdurch umbenannt wurde
+<ul>
+<li>kein Fehler</li>
+<li>Merge completed</li>
+<li><i>aber nichts gemacht</i></li>
+
+</ul></li>
+<li>offen seit mindestens 8 Jahren</li>
+<li>war es dieser <a href="https://issues.apache.org/jira/browse/SVN-898">Bug</a>? (der ist 15 Jahre alt…)</li>
+<li>vor drei(?) Jahren Begeisterung in der Fachpresse: „wird mit Version
+1.10 gefixt!“
+<ul>
+<li>die ist nur leider immer noch nicht erschienen oder so</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org0e8c157">
+<h3 id="org0e8c157"><span class="section-number-3">4.2</span> Continuous Integration</h3>
+<p>
+bedeutet, dass man seine Software regelmäßig baut und testet.  Je
+schneller man neu eingebaute Fehler findet, um so eher weiß man noch,
+was man gerade getan hat.  Oder wer es war.
+</p>
+
+<p>
+Lieber 3× pro Woche mit einem einzelnen Fehler den Build kaputtmachen
+als zum Releasetermin mit 50 Problemen auf einmal zu kämpfen.
+</p>
+
+<p>
+Tools dafür wären z.B. <a href="https://jenkins.io/">Jenkins</a> oder <a href="https://travis-ci.org/">TravisCI</a>.
+</p>
+
+</section>
+<section id="slide-org3d66734">
+<h4 id="org3d66734">Build</h4>
+<ul>
+<li>regelmäßig und <i>oft</i> bauen
+<ul>
+<li>nicht nur 1× pro Woche oder pro Monat</li>
+
+</ul></li>
+<li>kurzfristig bauen
+<ul>
+<li>direkt nach jedem Commit</li>
+
+</ul></li>
+
+</ul>
+
+<p>
+Dafür ist ein manueller Build zu aufwändig und teuer, daher braucht
+man einen <i>automatischem Buildprozess</i>.  Das führt zu
+<i>reproduzierbaren Ergebnissen</i> und vergessene bzw. fehlerhafte
+Schritte im Build werden als Fehlerquelle ausgeschlossen.
+</p>
+
+</section>
+<section id="slide-org29308e5">
+<h4 id="org29308e5">Test</h4>
+<ul>
+<li>regelmäßig und <i>oft</i> testen
+<ul>
+<li>nicht nur 1× pro Woche oder pro Monat</li>
+
+</ul></li>
+<li>kurzfristig testen
+<ul>
+<li>direkt nach jedem Commit</li>
+
+</ul></li>
+
+</ul>
+
+<p>
+Dafür sind manuelle Tests zu aufwändig und teuer, daher braucht man
+<i>automatisierte Tests</i>.  Nebenbei fallen dann auch regelmäßig
+Test-Metriken ab (Testabdeckung, Testanzahl, Fehlerquoten,
+Problem-Hotspots, …).
+</p>
+
+<p>
+Manuelle Tests sind weiterhin nötig, aber nicht als Teil von
+<i>Continuous Integration</i>.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org43e49dc">
+<h3 id="org43e49dc"><span class="section-number-3">4.3</span> Continuous Inspection</h3>
+<p>
+ist dann, wenn man regelmäßig (z.B. im CI-Build oder über Nacht)
+automatisiert Metriken ermittelt (z.B. <code>// FIXME</code> zählen) und/oder den
+Code auf mögliche Fehler und Warnungen überprüft (z.B. fehlende
+NullPointer-Prüfungen oder <code>==</code> statt <code>equals()</code>).
+</p>
+
+<p>
+Tools dafür wären z.B. <a href="http://findbugs.sourceforge.net/">FindBugs</a>, <a href="https://www.sonarqube.org/">SonarQube</a>, <a href="https://pmd.github.io/">PMD/CPD</a> oder <a href="https://metacpan.org/pod/Perl::Critic">Perl::Critic</a>.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgc9b44c7">
+<h3 id="orgc9b44c7"><span class="section-number-3">4.4</span> Continuous Delivery</h3>
+<p>
+ist dann, wenn man erzeugte Buildergebnisse automatisiert in eine
+Testumgebung einspielt.
+</p>
+
+<p>
+Anders als <i>Continuous Integration</i> hat das nicht nur Vorteile,
+sondern hier ist eine Abwägung nötig, weil verschiedene negative
+Effekte auftreten können.
+</p>
+
+</section>
+<section id="slide-orga506d58">
+<h4 id="orga506d58">Continuous Delivery</h4>
+<ul>
+<li>gut: laufend aktualisierter Stand in Testumgebung</li>
+<li>aber: Deployment/Auslieferung/Aufspielung unterbricht laufende Tests</li>
+<li>Fehler in zentralen Komponenten (z.B. Login) haben durchschlagende
+Wirkung auf andere
+<ul>
+<li>vielleicht doch nicht alles sofort automatisch deployen?</li>
+<li>eigene Testumgebung für jede Komponente?</li>
+<li>mehrstufiges Testkonzept?</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgb218dd4">
+<h4 id="orgb218dd4">Continuous Delivery</h4>
+<ul>
+<li>grundsätzlich nicht mehr Fehler als vorher zu erwarten, aber
+<ul>
+<li>zeitlich verteilter</li>
+<li>höhere Änderungsrate</li>
+<li>immer mal wieder was andere</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org7bdeb33">
+<h2 id="org7bdeb33"><span class="section-number-2">5</span> Tests</h2>
+<p>
+verifizieren, dass Code nach einer Änderung (noch) das tut, was er
+soll.
+</p>
+
+<p>
+Je früher im Software-Lifecycle Fehler gefunden werden, um so billiger
+sind sie zu beheben.
+</p>
+
+<aside class="notes">
+<p>
+Beispiel:
+Während der Erfassung der Requirements ist ein „das kann ja gar nicht
+funktionieren“ deutlich billiger als wenn das erst nach zwei Monaten
+Programmierarbeit festgestellt wird.  Oder gar erst in Produktion.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org4b97d24">
+<h3 id="org4b97d24"><span class="section-number-3">5.1</span> Testpyramide</h3>
+<p>
+Es gibt verschiedene Arten von Tests:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Art</th>
+<th scope="col" class="org-left">Anzahl</th>
+<th scope="col" class="org-left">Häufigkeit</th>
+<th scope="col" class="org-left">Kosten</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">manuelle Tests</td>
+<td class="org-left"><code>#</code></td>
+<td class="org-left"><code>I</code></td>
+<td class="org-left"><code>$$$$</code></td>
+</tr>
+
+<tr>
+<td class="org-left">automatisierte Oberflächentests</td>
+<td class="org-left"><code>##</code></td>
+<td class="org-left"><code>II</code></td>
+<td class="org-left"><code>$$$</code></td>
+</tr>
+
+<tr>
+<td class="org-left">Integrationstests</td>
+<td class="org-left"><code>###</code></td>
+<td class="org-left"><code>III</code></td>
+<td class="org-left"><code>$$</code></td>
+</tr>
+
+<tr>
+<td class="org-left">Unit-Tests</td>
+<td class="org-left"><code>####</code></td>
+<td class="org-left"><code>IIII</code></td>
+<td class="org-left"><code>$</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Desweiteren <i>Lasttests</i>, <i>Fuzzying</i>, <i>Smoke-Tests</i> etc.
+</p>
+
+<aside class="notes">
+<dl>
+<dt>Lasttests</dt><dd>Testet Laufzeitverhalten und Ressourcenverbrauch unter
+Last, meist durch viele parallele simulierte User oder
+große Datenmengen.  Benötigt meist eine besonders
+produktionsnahe Umgebung für sinnvolle Aussagen (eher
+nicht der lokale Entwicklerrechner).  Wird im
+Normalfall automatisiert getestet (Gegenbeispiel wäre
+ein Free-for-all-Beta-Wochenende bei einem
+Online-Spiel).</dd>
+
+<dt>Fuzzying</dt><dd>Versucht, Programmfehler durch ungültige Eingabedaten
+herauszukitzeln (ursprünglich mit zufälligen Daten,
+inzwischen aber schon sehr gezielt - interessanter
+Forschungsbereich).  Meist geht es um Security-Probleme
+(Buffer-Overflows etc.).  Bei interaktiven Programmen
+reicht es manchmal schon, eine Katze über die Tastatur
+laufen zu lassen.  Oder <i>millions of Monkeys banging on
+typewriters</i>.  Wird im Normalfall automatisiert
+getestet.</dd>
+
+<dt>Smoke-Tests</dt><dd>Kurztest nach dem Deployment einer neuen Version in
+eine (Test-)Umgebung.  Wird meist aus kostengründen
+automatisiert, je nach Deploymenthäufigkeit kann aber
+auch ein manueller Test ausreichen - der Test selbst
+geht ja schnell und testet nur das wichtigste
+(z.B. Logon und eine Query).</dd>
+
+</dl>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgd57eac4">
+<h3 id="orgd57eac4"><span class="section-number-3">5.2</span> Unit-Tests</h3>
+<p>
+Unit-Tests sind Tests, die ein einzelnes Stück Code (ein Modul, eine
+Klasse) testen und dabei möglichst unabhängig von allem anderen sind.
+Sie testen explizit nicht das Zusammenspiel mehrerer Komponenten.
+</p>
+
+<p>
+Gute Unit-Tests sollten <i>fast</i>, <i>isolated</i>, <i>repeatable</i>,
+<i>self-validating</i> und <i>timely</i> sein.
+</p>
+
+</section>
+<section id="slide-orgeeefad2">
+<h4 id="orgeeefad2">FIRST</h4>
+<dl>
+<dt>Fast</dt><dd>Schnelle Ausführung.  Wer z.B. ernsthaft mit <i>TDD</i> arbeiten
+möchte, muss in die Größenordnung „unter drei Sekunden für mehrere
+hundert Tests“ kommen.</dd>
+<dt>Isolated</dt><dd>Die Tests hängen nicht voneinander ab.  Jeder ist für sich
+einzeln ausführbar.  Die Reihenfolge der Testfälle ist egal.
+Notwendiges Setup ist Teil des jeweilgen Tests.</dd>
+
+</dl>
+
+</section>
+<section id="slide-org209a667">
+<h4 id="org209a667">FIRST</h4>
+<dl>
+<dt>Repeatable</dt><dd>Eine erneute Durchführung auf der gleichen Codebasis
+muss exakt das gleiche Ergebnis bringen.</dd>
+<dt>Self-Validating</dt><dd>Der Test prüft, ob das Ergebnis falsch oder korrekt
+ist.  Es werden nicht einfach Daten zusammengesucht, die dann im
+Anschluss ein Mensch bewerten muss.</dd>
+<dt>Timely</dt><dd>Tests sollten zeitnah geschrieben (siehe <i>TDD</i>) und zeitnah
+ausgeführt werden (siehe <i>Continuous Integration</i>).</dd>
+
+</dl>
+
+</section>
+<section id="slide-orgcb4bbff">
+<h4 id="orgcb4bbff">Allgemeines</h4>
+<ul>
+<li>Tests sind <i>first-class</i>-code
+<ul>
+<li>Clean Code, Wartbarkeit, Wiederverwendung…</li>
+
+</ul></li>
+<li>Tests müssen bei Änderungen angepasst werden
+<ul>
+<li>in Schätzungen direkt mit einpreisen</li>
+<li>getrennt ausgewiesen wird es gestrichen ;-)</li>
+
+</ul></li>
+<li>Tests regelmäßig ausführen, sonst veralten sie
+<ul>
+<li>siehe <i>Continuous Integration</i></li>
+
+</ul></li>
+<li>Tests sind Dokumentation…
+<ul>
+<li>…die bei Änderungen angepasst werden <b>muss</b></li>
+<li>bei guten Tests kann eine Komponente allein auf Basis der Tests
+reimplementiert werden</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orge989dd8">
+<h4 id="orge989dd8">Abhängigkeiten</h4>
+<blockquote nil>
+<p>
+Ich kann das aber nicht einzeln testen, ich brauche den Server und die
+Datenbank und das Netzwerk…
+</p>
+</blockquote>
+
+<p class="fragment">
+Standardlösung: <i>teile und herrsche</i>
+</p>
+
+</section>
+<section id="slide-orga246ef2">
+<h4 id="orga246ef2">Abhängigkeiten</h4>
+<ul>
+<li>Methode/Klasse/Komponente/Codestück feiner unterteilen in
+<ul>
+<li>testbaren Teil</li>
+<li>nicht (einfach) testbaren Teil</li>
+
+</ul></li>
+<li>testbaren Teil testen!
+<ul>
+<li>Durchführen Datenbank-Requests fällt halt weg</li>
+<li>Verarbeitung künstliches <code>ResultSet</code> trotzdem testbar</li>
+
+</ul></li>
+
+</ul>
+
+<p>
+Benötigte Abhängigkeiten ersetzen durch Dummys/Stubs/Mocks.
+</p>
+
+<aside class="notes">
+<p>
+Beispiel für statische Helper: Instanziierten Wrapper bauen, der kann
+dann weggestubt werden.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org5c13b97">
+<h4 id="org5c13b97">Innereien</h4>
+<blockquote nil>
+<p>
+Ich würde das gerne testen, aber dafür müsste ich an $Detail herankommen,
+das soll aber intern bleiben dran.
+</p>
+</blockquote>
+
+<ul class="fragment">
+<li>Unit-Tests sind <i>keine</i> Black-Box-Tests</li>
+<li>Tests der Innereien sind erlaubt</li>
+<li>Zugriffe darauf auch</li>
+
+</ul>
+
+</section>
+<section id="slide-org158ac53">
+<h4 id="org158ac53">Innereien</h4>
+<p>
+Standardlösung: <i>Sichtbarkeit erhöhen</i>
+</p>
+
+<ul>
+<li>Problem
+<ul>
+<li><code>private</code>-Variable für Abhängigkeit</li>
+<li>gefüllt per <code>@Inject</code> zur Laufzeit</li>
+
+</ul></li>
+
+<li>Lösung
+<ul>
+<li>Sichtbarkeit auf <code>package</code> erhöhen</li>
+<li>Test kann direkt ein Dummy/Stub/Mock setzen</li>
+<li>Injection-Framework muss nicht für den Test initialisiert werden</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org1a56c6b">
+<h3 id="org1a56c6b"><span class="section-number-3">5.3</span> Test your tests</h3>
+<blockquote nil>
+<p>
+Schöne Unit-Tests haben Sie da, wäre doch schade, wenn die gar nichts tun.
+</p>
+</blockquote>
+
+<ul>
+<li>100% Codeabdeckung == sinnvolle Tests?</li>
+
+</ul>
+
+</section>
+<section id="slide-orga3d982b">
+<h4 id="orga3d982b">Beispielcode</h4>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #00ffff;">private</span> <span style="color: #98fb98;">int</span> <span style="color: #87cefa;">calc</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">a</span>, <span style="color: #98fb98;">b</span>, <span style="color: #98fb98;">c</span>) {
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">d</span> = a + b * c;
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">e</span> = a * b + c;
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">f</span> = d * e;
+    <span style="color: #00ffff;">for</span> (<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; <span style="color: #98fb98;">c</span>; i++) {
+        f += a;
+        e += d--;
+    }
+    <span style="color: #00ffff;">return</span> 3;
+}
+</pre>
+</div>
+
+</section>
+<section id="slide-orgce21bcb">
+<h4 id="orgce21bcb">Beispieltest</h4>
+<div class="org-src-container">
+
+<pre  class="src src-java"><span style="color: #7fffd4;">@Test</span>
+<span style="color: #00ffff;">public</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">testCalc</span>() {
+    <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">given</span>
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">a</span> = 3;
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">b</span> = 2;
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">c</span> = 1;
+
+    <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">when</span>
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">result</span> = calc(a, b, c);
+
+    <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">then</span>
+    assertThat(<span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Date</span>(), notNullValue());
+}
+</pre>
+</div>
+
+<ul>
+<li>Test grün</li>
+<li>Codeabdeckung 100%</li>
+<li>Testaussage == 0</li>
+
+</ul>
+
+</section>
+<section id="slide-orgb086d72">
+<h4 id="orgb086d72">Mutation Testing</h4>
+<ul>
+<li><i>mutiert</i> den Code:
+<ul>
+<li>Bedingungen umdrehen</li>
+<li>Methodenaufrufe weglassen</li>
+<li><code>return null</code> statt Objekten (und <code>RuntimeException</code> statt <code>null</code>)</li>
+<li>usw.</li>
+
+</ul></li>
+<li>nur eine Änderung je Mutation
+<ul>
+<li>viele! Mutationen</li>
+
+</ul></li>
+<li>jede Mutation wird getestet</li>
+<li>grüner Test -&gt; Problem!</li>
+
+<li>Java: <a href="http://pitest.org/">PIT mutation testing</a></li>
+<li>Perl: <a href="https://metacpan.org/pod/Devel::Mutator">Devel::Mutator</a></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org9e0272e">
+<h2 id="org9e0272e"><span class="section-number-2">6</span> Clean Code</h2>
+<blockquote nil>
+<p>
+Der nächste Rewrite kommt bestimmt.
+</p>
+</blockquote>
+
+<ul>
+<li>denn: je schlimmer der Code, um so teurer jede Änderung</li>
+<li>irgendwann ist Wegwerfen und Neumachen billiger</li>
+<li>lässt sich das verhindern?
+<ul>
+<li>nein!</li>
+<li>aber deutlich verzögern</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org38aa228">
+<h3 id="org38aa228"><span class="section-number-3">6.1</span> Nichtfunktionale Anforderungen</h3>
+<p>
+Code sollte…
+</p>
+
+<ul>
+<li>gut lesbar</li>
+<li>sprechend</li>
+<li>leicht zu erweitern</li>
+<li>wartungsfreundlich</li>
+<li>so einfach wie möglich</li>
+<li>so kompliziert wie nötig</li>
+
+</ul>
+
+<p>
+…sein.
+</p>
+
+<p>
+Dann klappt das auch mit der Haltbarkeit.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org50ebc22">
+<h3 id="org50ebc22"><span class="section-number-3">6.2</span> Clean-Code-Toolbox</h3>
+<p>
+Ähnlich den bekannten Design-Patterns gibt es auch im
+Clean-Code-Bereich verschiedene Prinzipien und Techniken für bestimmte
+Situationen, aus denen man sich nach Bedarf bedienen kann und die man
+gezielt üben, ausprobieren und lernen kann.
+</p>
+
+<p>
+Eine schöne Sammlung der einzenen Prinzipien findet sich auf <a href="http://clean-code-developer.de/">Clean
+Code Developer</a> in der Auflistung der einzelnen Grade.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org46cc0bf">
+<h3 id="org46cc0bf"><span class="section-number-3">6.3</span> Pfadfinderregel</h3>
+<blockquote nil>
+<p>
+Hinterlasse den Zeltplatz sauberer, als Du ihn vorgefunden hast.
+</p>
+</blockquote>
+
+<p>
+Das gilt auch für Code.  Und wenn man sich eh gerade genau hier
+eingelesen hat, weil man einen Bug gesucht oder etwas erweitert hat,
+kann man auch nochmal fünf Minuten investieren, statt nur den Kopf zu
+schütteln.
+</p>
+
+<ul>
+<li>nur <i>Refactoring</i>, keine Funktionserweiterungen</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org727c60d">
+<h3 id="org727c60d"><span class="section-number-3">6.4</span> don’t repeat yourself (DRY)</h3>
+<p>
+Wiederholungen zu vermeiden ist ein Grundanliegen der Informatik,
+sonst würden wir alle noch direkt mit Maschinencode arbeiten.
+</p>
+
+<ul>
+<li>Duplikate können bei Änderungen vergessen oder übersehen werden.
+<ul>
+<li>daher: Code in Methoden/Klassen auslagern und mehrfach aufrufen</li>
+<li>Nebeneffekt: Methodenaufrufe sind meist kürzer und übersichtlicher
+und haben eine höhere Abstraktionsebene (fachliche Funktion)</li>
+
+</ul></li>
+<li>Der Aufruf vorhandener Methoden ist schneller als den Code selbst neu
+zu schreiben und neu zu testen.</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+Wikipedia sagt: Das Gegenteil ist <i>WET</i>:
+</p>
+<ul>
+<li>write everything twice</li>
+<li>we enjoy typing</li>
+<li>waste everyone's time</li>
+
+</ul>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org9858b54">
+<h3 id="org9858b54"><span class="section-number-3">6.5</span> don’t lie</h3>
+<p>
+Eine Variable/Methode/Klasse sollte möglichst passend benamst sein.
+</p>
+
+<ul>
+<li>Bei einem Aufruf <code>konto.getKontonummer()</code> erwartet niemand, dass im
+Hintergrund ein neues Konto angelegt wird, wenn noch keines
+existiert.</li>
+<li>Bei <code>nettoPreis = nettoPreis * 1.19</code> ist irgendwas faul.</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+Benamsungsschema:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Typ</th>
+<th scope="col" class="org-left">public/global scope</th>
+<th scope="col" class="org-left">private/local scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Method</td>
+<td class="org-left">short and generic</td>
+<td class="org-left">long and detailed</td>
+</tr>
+
+<tr>
+<td class="org-left">Variable</td>
+<td class="org-left">long and detailed</td>
+<td class="org-left">short and generic</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li><code>public static final String MAIN_HEADQUARTERS_STREET_ADDRESS = "…";</code></li>
+<li><code>for (int i=0; i&lt;max; i++) {</code></li>
+<li><code>public BigDecimal add(BigDecimal other)</code></li>
+<li><code>private double getDefaultTaxFactorIfNoProductTypeExists()</code></li>
+
+</ul>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org9ef3eb2">
+<h3 id="org9ef3eb2"><span class="section-number-3">6.6</span> Single Responsibility Principle</h3>
+<p>
+Eine Klasse/Methode/Komponente sollte möglichst immer nur eine Sache
+tun.
+</p>
+
+<ul>
+<li>Code wird einfacher, kürzer und verständlicher</li>
+<li>Code wird wiederverwendbarer, da weniger Abhängigkeiten bestehen</li>
+
+</ul>
+
+<p>
+Mögliche Hinweise auf Probleme:
+</p>
+<ul>
+<li>ein <i>und</i> im Methodennamen: <code>calculateAreaAndDrawCircle()</code></li>
+<li>wenn das Arrange im Unit-Test ausartet</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orga2445e6">
+<h3 id="orga2445e6"><span class="section-number-3">6.7</span> no comment</h3>
+<blockquote nil>
+<p>
+Clean Code verbietet alle Kommentare
+</p>
+</blockquote>
+
+<ul>
+<li>nicht ganz richtig</li>
+<li>aber nahe dran:
+<ul>
+<li>sinnvolles behalten</li>
+<li>unnützes weg</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org5015839">
+<h4 id="org5015839">exhibit 1</h4>
+<div class="org-src-container">
+
+<pre  class="src src-perl"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">z&#228;hle $i um 1 hoch</span>
+$<span style="color: #eedd82;">i</span>++;
+</pre>
+</div>
+
+<ul class="fragment">
+<li>Informationsgehalt == 0</li>
+<li>verstößt gegen <i>DRY</i></li>
+
+</ul>
+
+</section>
+<section id="slide-org3456868">
+<h4 id="org3456868">exhibit 2</h4>
+<div class="org-src-container">
+
+<pre  class="src src-perl"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">z&#228;hle $i um 1 hoch</span>
+<span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">$i++;</span>
+</pre>
+</div>
+
+<ul class="fragment">
+<li>Informationsgehalt weiterhin 0</li>
+<li>zusätzliche Verwirrung: warum auskommentiert?</li>
+
+</ul>
+
+</section>
+<section id="slide-orgb923780">
+<h4 id="orgb923780">exhibit 3</h4>
+<div class="org-src-container">
+
+<pre  class="src src-perl"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">z&#228;hle $i um 1 hoch</span>
+$<span style="color: #eedd82;">textureCount</span>++;
+</pre>
+</div>
+
+<ul class="fragment">
+<li>was mag hier passiert sein?
+<ul>
+<li>womöglich Refactoring</li>
+<li>erwischt nicht unbedingt die Kommentare…</li>
+
+</ul></li>
+<li>Erkenntnis: Kommentare veralten</li>
+
+</ul>
+
+</section>
+<section id="slide-orgb4d5637">
+<h4 id="orgb4d5637">exhibit 4</h4>
+<div class="org-src-container">
+
+<pre  class="src src-perl"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">z&#228;hle $i um 1 hoch</span>
+$<span style="color: #eedd82;">i</span>+=10;
+</pre>
+</div>
+
+<ul class="fragment">
+<li>was stimmt denn nun?</li>
+<li>verstößt gegen <i>don’t lie</i></li>
+
+</ul>
+
+</section>
+<section id="slide-org5cfb82b">
+<h4 id="org5cfb82b">exhibit 5</h4>
+<div class="org-src-container">
+
+<pre  class="src src-perl"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">ermittelt die Artikelteilnummer</span>
+<span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">aus dem Identifikationsstring</span>
+<span style="color: #00ffff;">if</span> (<span style="color: #ffa07a;">/^AKR-[0-9A-F]{8}-([0-9X])-999$)/</span>) {
+    <span style="color: #00ffff;">return</span> $<span style="color: #eedd82;">1</span>;
+}
+</pre>
+</div>
+
+<ul class="fragment">
+<li>echte Information!
+<ul>
+<li>sofern inhaltlich richtig…</li>
+
+</ul></li>
+<li>aber unbedingt benötigt?</li>
+
+</ul>
+
+</section>
+<section id="slide-org7d62f4b">
+<h4 id="org7d62f4b">exhibit 5a</h4>
+<div class="org-src-container">
+
+<pre  class="src src-perl"><span style="color: #00ffff;">if</span> ($<span style="color: #eedd82;">ident_str</span> =~ <span style="color: #ffa07a;">/^AKR-[0-9A-F]{8}-([0-9X])-999$)/</span>) {
+    <span style="color: #98fb98;">my</span> $<span style="color: #eedd82;">artikel_teil_nr</span> = $<span style="color: #eedd82;">1</span>;
+    <span style="color: #00ffff;">return</span> $<span style="color: #eedd82;">artikel_teil_nr</span>;
+}
+</pre>
+</div>
+
+<ul class="fragment">
+<li>Variablennamen ersetzen Kommentare</li>
+
+</ul>
+
+</section>
+<section id="slide-org1967d63">
+<h4 id="org1967d63">exhibit 5b</h4>
+<div class="org-src-container">
+
+<pre  class="src src-perl"><span style="color: #00ffff;">sub</span> <span style="color: #87cefa;">get_artikel_teil_nr_from_ident_str</span> {
+    <span style="color: #00ffff;">if</span> (<span style="color: #ffa07a;">/^AKR-[0-9A-F]{8}-([0-9X])-999$)/</span>) {
+        <span style="color: #00ffff;">return</span> $<span style="color: #eedd82;">1</span>;
+    }
+}
+</pre>
+</div>
+
+<ul class="fragment">
+<li>Methodennamen ersetzen Kommentare</li>
+
+</ul>
+
+</section>
+<section id="slide-org7b0f7e7">
+<h4 id="org7b0f7e7">APIs</h4>
+<ul>
+<li>API-Kommentare an öffentlichen Methoden sind natürlich sinnvoll!</li>
+<li>hier gibt es auch Toolunterstützung
+<ul>
+<li>IDEs können beim Refactoring JavaDoc automatisch anpassen</li>
+<li>JavaDoc meckert z.B. fehlende Parameter-Doku an
+<ul>
+<li>das deckt umbenannte Parameter auf</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgd464f72">
+<h3 id="orgd464f72"><span class="section-number-3">6.8</span> Refactoring</h3>
+<p>
+bedeutet, den Code umzubauen, ohne seine fachliche Funktion zu
+verändern, um z.B. die zuvor genannten Prinzipien einzuhalten.  Im
+Idealfall unterstützt dabei die IDE.
+</p>
+
+<ul>
+<li>Globales Umbenennen von Variablen, Methoden, Klassen, Modulen oder Dateien</li>
+<li>Verschieben von Code von/in Methoden, Klassen, Module…</li>
+<li>Anpassen von Parameterleisten</li>
+
+</ul>
+
+<p>
+(Unit-)Tests geben Sicherheit beim Refactoring.
+</p>
+</section>
+</section>
+<section>
+<section id="slide-org68e46b2">
+<h3 id="org68e46b2"><span class="section-number-3">6.9</span> und vieles mehr</h3>
+<dl>
+<dt>YAGNI</dt><dd>you ain’t gonna need it</dd>
+<dt>IOSP</dt><dd>Integration Operation Segregation Principle</dd>
+<dt>FCoI</dt><dd>Favor Composition over Inheritance</dd>
+<dt>…</dt><dd></dd>
+
+</dl>
+</section>
+</section>
+<section>
+<section id="slide-org7fa2bdc">
+<h2 id="org7fa2bdc"><span class="section-number-2">7</span> im Team</h2>
+<blockquote nil>
+<p>
+Programmieren ist Kommunikation
+</p>
+</blockquote>
+
+<p>
+Wer das mal intensiv ausprobieren will:
+Der <a href="http://coderetreat.org/">Global Day of Coderetreat</a> ist dieses Jahr am 18. November.
+Veranstaltung in der Nähe suchen und hin!
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgce48b45">
+<h3 id="orgce48b45"><span class="section-number-3">7.1</span> Grundsätzlich</h3>
+<p>
+Bei allen Themen hier im Vortrag gilt:
+</p>
+
+<ul>
+<li>im Team drüber reden</li>
+<li>im Team entscheiden</li>
+
+</ul>
+
+<p>
+Im Idealfall kann man Tools und Prozesse beeinflussen.
+Vielleicht nicht immer alles, aber irgendwas geht immer.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-org505e194">
+<h3 id="org505e194"><span class="section-number-3">7.2</span> Coding Style</h3>
+<p>
+betrifft alles von Tabulatoren und Leerzeichen über Klammern und
+Variablennamen.  Sprecht mir nach:
+</p>
+
+<blockquote nil>
+<p>
+Es gibt kein Falsch und Richtig.
+</p>
+</blockquote>
+
+<ul>
+<li>persönliche Vorlieben</li>
+<li>Gefahr von Bikeshedding</li>
+
+</ul>
+
+</section>
+<section id="slide-org85b6ed5">
+<h4 id="org85b6ed5">das ist jetzt nur meine Meinung…</h4>
+<ul>
+<li>hauptsache <i>irgendeine</i> Vorgabe
+<ul>
+<li>auch wenn ich es persönlich anders machen würde</li>
+
+</ul></li>
+<li><i>Format on Save</i> ist eine feine Sache
+<ul>
+<li>soll das Tool das machen, ich muss Code schreiben</li>
+<li>Obacht: Autoformat mit verschiedenen Formaten bedeutet Chaos beim
+Diff-Lesen!  Wenn, dann <i>genau eine</i> Formatierung.</li>
+
+</ul></li>
+
+</ul>
+
+<aside class="notes">
+<p>
+<b>Tooling-Wunsch</b>
+</p>
+<ul>
+<li>beim Auschecken oder Öffnen im Editor Autoformat nach persönlicher Vorliebe</li>
+<li>beim Einchecken oder Abspeichern wieder nach Gruppenvorgabe formatieren</li>
+
+</ul>
+<p>
+Gibt’s das schon in fertig?
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org07d7d43">
+<h3 id="org07d7d43"><span class="section-number-3">7.3</span> Code Reviews</h3>
+<p>
+sind, wenn man sich gezielt den Code von jemand anderem anguckt, egal
+ob alleine oder gemeinsam.
+</p>
+
+<ul>
+<li>streut Wissen über den Code im Team</li>
+<li>führt mittelfristig zu ähnlicherem Programmierstil</li>
+
+</ul>
+
+</section>
+<section id="slide-org4ec2403">
+<h4 id="org4ec2403">Code Reviews</h4>
+<ul>
+<li>konstruktiv kritisieren (naheliegend, aber nicht immer einfach)</li>
+<li>gemeinsam Kriterien erarbeiten, was zu reviewen ist
+<ul>
+<li>Benamsung?</li>
+<li>Coding Style?</li>
+<li>Designentscheidungen?</li>
+<li>Sprachmittel? (z.B. <code>for()</code> vs. Iteratoren vs. Streams)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orge9115ac">
+<h3 id="orge9115ac"><span class="section-number-3">7.4</span> Pair Programming</h3>
+<p>
+ist, wenn man zu zweit programmiert.  Gleichzeitig.  An einem Gerät.
+</p>
+
+<ul>
+<li>nicht zu lange/zu oft (schlaucht ungemein!)
+<ul>
+<li>ggf. auf schwierigen oder kritischen Code beschränken?</li>
+
+</ul></li>
+
+<li>teilt viel unbewusstes Nebenbei-Wissen
+<ul>
+<li>„ach so machst Du das, das ist ja viel einfacher!“</li>
+
+</ul></li>
+
+</ul>
+
+<aside class="notes">
+<ul>
+<li>mindestens <i>Pair Debugging</i> hat jeder wohl schon mal gemacht</li>
+
+<li>ideal, um beim gemeinsamen Lösen einer Kata in eine neue
+Programmiersprache zu schnuppern</li>
+
+</ul>
+
+</aside>
+
+</section>
+<section id="slide-orgddea8d6">
+<h4 id="orgddea8d6">Umfeld</h4>
+<ul>
+<li>zwei Stühle</li>
+<li>Maus und Tastatur</li>
+<li>Zeit nehmen (keine Störungen)</li>
+<li>persönliche Sonderlocken abschalten
+<ul>
+<li>Tastaturlayout, Keybindings, Windowmanager, …
+<ul>
+<li>es sei denn, man will genau das jemand anderem beibringen, dafür
+ist das Format nämlich ideal</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org39e1122">
+<h4 id="org39e1122">Driver/Navigator</h4>
+<dl>
+<dt>Driver</dt><dd><ul>
+<li>hat Tastatur und Maus</li>
+<li>ist primär für Tastenkürzel und effiziente Eingabe (Cut&amp;Paste
+etc.) zuständig</li>
+<li>kümmert sich primär um die aktuelle Klasse/Methode/Datei</li>
+<li>darf natürlich auch mitdenken, wenn er Luft hat</li>
+
+</ul></dd>
+
+</dl>
+
+</section>
+<section id="slide-orga038605">
+<h4 id="orga038605">Driver/Navigator</h4>
+<dl>
+<dt>Navigator</dt><dd><ul>
+<li>hat den Überblick</li>
+<li>denkt voraus</li>
+<li>guckt links und rechts („…wenn wir das hier ändern, dann geh danach
+mal in die andere Klasse, da müssen wir dann ja noch…“)</li>
+
+</ul></dd>
+
+</dl>
+
+</section>
+<section id="slide-orge37afba">
+<h4 id="orge37afba">Driver/Navigator</h4>
+<ul>
+<li>Rollen regelmäßig tauschen
+<ul>
+<li>z.B. alle 5-10 Minuten</li>
+
+</ul></li>
+
+<li>Kommunikation der aktuellen Situation anpassen
+<ul>
+<li>high-level, wenn der Driver gut drauf ist
+<ul>
+<li>„extrahiere das mal als Methode und vertausche die Parameter“</li>
+
+</ul></li>
+<li>low-level, falls der Driver mal auf dem Schlauch steht
+<ul>
+<li>„mach da mal Rechtsklick und wähle den ersten Menüpunkt“</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orge1ace68">
+<h4 id="orge1ace68">Mob Programming</h4>
+<p>
+ist dann, wenn ein Driver für mehrere Navigatoren (den <i>Mob</i>) tippt.  Dabei kann der
+Driver auch länger oder dauerhaft in seiner Rolle bleiben.
+</p>
+
+<p>
+Alternativ kann man auch die Pairs durchrotieren, das ist aber
+kein <i>Mob Programming</i> mehr:
+</p>
+
+<div class="org-src-container">
+
+<pre  class="src src-perl">push @<span style="color: #eedd82; text-decoration: underline;">group</span>, $<span style="color: #eedd82;">driver</span>;
+($<span style="color: #eedd82;">driver</span>, $<span style="color: #eedd82;">navigator</span>) = ($<span style="color: #eedd82;">navigator</span>, shift @<span style="color: #eedd82; text-decoration: underline;">group</span>);
+</pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org02dc6c0">
+<h3 id="org02dc6c0"><span class="section-number-3">7.5</span> Coding Dojos</h3>
+<p>
+sind ein Format, in dem man gemeinsam oder in Gruppen (z.B. <i>Pair
+Programming</i>) Übungsaufgaben löst (also <i>Katas</i>), um sich
+auszutauschen, fortzubilden oder etwas zu vertiefen.
+</p>
+
+<ul>
+<li>vom produktiven Tagesgeschäft trennen</li>
+<li>auch mal was ausprobieren
+<ul>
+<li>Fehlschläge sind erlaubt</li>
+
+</ul></li>
+<li>Ergebnisse löschen
+<ul>
+<li>„what happens in the dojo, stays in the dojo“</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org83d7c4a">
+<h2 id="org83d7c4a"><span class="section-number-2">8</span> Test Driven Development</h2>
+<p>
+ist eine Entwicklungstechnik, bei der man sich der gewünschten
+Funktionalität Schritt für Schritt annähert, ohne sich vorher viele
+Gedanken um die Architektur zu machen.  Die entwickelt sich einfach
+mit.
+</p>
+
+<ul>
+<li>es wird nur Code geschrieben, der tatsächlich benötigt wird</li>
+<li>der geschriebene Code ist von vorneherein durch Unit-Tests abgedeckt</li>
+
+</ul>
+
+<p>
+<i>TDD</i> lässt sich prima mit <i>Katas</i> ausprobieren und lernen.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgc7e1813">
+<h3 id="orgc7e1813"><span class="section-number-3">8.1</span> Der TDD-Zyklus</h3>
+<p>
+Die Entwicklung nach <i>TDD</i> erfolgt in vielen kleinen Iterationen nach
+diesem Ablauf:
+</p>
+
+<dl>
+<dt>Roter Pfad</dt><dd>neuer Testfall, Funktionalität existiert noch nicht,
+Testfall muss rot sein</dd>
+
+<dt>Grüner Pfad</dt><dd>minimale Menge Code implementieren, um Testfall grün
+zu bekommen</dd>
+
+<dt>Refactoring</dt><dd>nur bei grünen Tests, Funktionalität muss
+unverändert bleiben; meist zeitlich größter Anteil</dd>
+
+</dl>
+
+<aside class="notes">
+<p>
+Ziel: Während die Tests spezifischer werden, wird der Code generischer.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orga62f2be">
+<h3 id="orga62f2be"><span class="section-number-3">8.2</span> Schrittweite</h3>
+<p>
+beschreibt den Umfang der Funktionalität, die in einer Iteration
+rot/grün/Refactoring erstellt wird.  Wächst meist, bis sie zu groß
+wird, man auf die Nase fällt und erstmal wieder kleiner weitermacht.
+Repeat :-)
+</p>
+
+</section>
+<section id="slide-orgae24745">
+<h4 id="orgae24745">Baby steps</h4>
+<ul>
+<li>übertrieben klein</li>
+<li>gut zum Üben von <i>TDD</i></li>
+
+</ul>
+
+</section>
+<section id="slide-org456f212">
+<h4 id="org456f212">kleinere Schritte</h4>
+<ul>
+<li>einfaches „zurück auf Los“ bei „funktioniert so nicht“</li>
+<li>Unterbrechungen/Pausen/Feierabend sind oft und zeitnah möglich
+(Tipp: roten Test stehenlassen (nicht einchecken), dann weiß man
+später genau, wo man gerade war)</li>
+
+</ul>
+
+</section>
+<section id="slide-org8bf6cc8">
+<h4 id="org8bf6cc8">größere Schritte</h4>
+<ul>
+<li>weniger Tests</li>
+<li>längeres kontinuierliches Hacken</li>
+<li>„zurück auf Los“ erwischt auch viel „guten“ Code</li>
+<li>Refactoring als großer Brocken statt kleine Häppchen</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org0f5cbd9">
+<h3 id="org0f5cbd9"><span class="section-number-3">8.3</span> Roter Pfad</h3>
+<ul>
+<li>jeder Test <i>muss</i> am Anfang einmal fehlschlagen:
+<ul>
+<li>wäre er grün, wäre die Teilanforderung schon implementiert und der
+Test bringt uns nicht weiter, da er keine neue Funktionalität
+<i>treibt</i></li>
+<li>wird er nicht rot, erkennt man sofort, wenn er vielleicht gar
+nicht ausgeführt wird (z.B. unter Java das <code>@Test</code> vergessen oder
+sowas)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org4e2a16a">
+<h4 id="org4e2a16a">Roter Pfad</h4>
+<ul>
+<li>das Ermitteln des nächsten sinnvollen Tests ist nicht immer ganz
+einfach
+<ul>
+<li>Erfahrung, Intuition, Bauchgefühl?  Keine sinnvollen Methodiken
+parat…</li>
+<li>Vorgehen ähnlich <i>minimal viable product</i>, aber kleinschrittiger,
+z.B. bei einer Suchfunktion in einer Datenbank:
+<ul>
+<li>erstmal nur Vorname</li>
+<li>dann auch Nachname</li>
+<li>Groß- und Kleinschreibung ignorieren</li>
+<li>Jokerzeichen</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org9da6c68">
+<h3 id="org9da6c68"><span class="section-number-3">8.4</span> Grüner Pfad</h3>
+<ul>
+<li><i>obvious implementation</i>: Die Lösung ist so offensichtlich, man
+schreibt sie einfach hin.  (Geht gerne schief, aber dafür hat man
+den Test.)</li>
+
+<li><i>fake it</i>: Behelfsweise schreibt man das erwartete Ergebnis erstmal
+direkt so hin.  (Ja, ehrlich!)</li>
+
+</ul>
+
+</section>
+<section id="slide-orgc15c21b">
+<h4 id="orgc15c21b">Grüner Pfad</h4>
+<ul>
+<li><i>triangulation</i>: Wenn sich mehrere <i>fake it</i>-Ergebnisse angesammelt
+haben, wird es Zeit, eine generelle Lösung zu bauen, statt auf immer
+längere <code>switch/case</code>-Statements zu setzen.  Merke:
+<ul>
+<li>einmal ist keinmal</li>
+<li>zweimal ist Zufall</li>
+<li>dreimal ist ein Pattern</li>
+
+</ul></li>
+
+</ul>
+
+<aside class="notes">
+<p>
+Begriffsverwirrung <i>Triangulation</i> -&gt; hier? beim grünen Pfad?
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgddcd817">
+<h3 id="orgddcd817"><span class="section-number-3">8.5</span> Refactoring</h3>
+<ul>
+<li><i>nur</i> wenn alle Tests grün sind
+<ul>
+<li>haut man mit dem Refactoring irgendwas kaputt, merkt man das, weil
+Tests plötzlich rot werden</li>
+
+</ul></li>
+<li>das volle <i>Clean Code</i>-Programm kommt zun Einsatz
+<ul>
+<li>Doppelungen entfernen (<i>DRY</i>)</li>
+<li>Variablen und Methoden umbenennen (<i>don't lie</i>)</li>
+<li>Klassen und Methoden extrahieren (<i>SRP</i>)</li>
+<li>…</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org1ed0d28">
+<h2 id="org1ed0d28"><span class="section-number-2">9</span> for further study</h2>
+<ul>
+<li>im Blog:
+<ul>
+<li><a href="https://www.cgarbs.de/blog/archives/1140-Test-Driven-Development-Teil-1-von-3.html">Test Driven Development</a></li>
+<li><a href="https://www.cgarbs.de/blog/archives/1151-Continuous-Integration-mit-GitHub.html">Continuous Integration mit GitHub</a></li>
+
+</ul></li>
+
+<li>auf GitHub:
+<ul>
+<li><a href="https://github.com/mmitch/tdd-starter">TDD-Startpaket</a> (leere Workspaces für verschiedene Sprachen)</li>
+<li><a href="https://github.com/mmitch/kata-simple-poker-hands">Simple Poker Hands Kata</a></li>
+<li><a href="https://github.com/mmitch/kata-christmas-tree">Weihnachtsbaum-Kata</a></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org7b73a44">
+<h2 id="org7b73a44"><span class="section-number-2">10</span> Ende</h2>
+<div class="org-center">
+<p>
+Danke!
+</p>
+</div>
+
+<div class="org-center">
+<p>
+Fragen?
+</p>
+</div>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: false,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+width: 1024,
+height: 768,
+margin: 0.20,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: './reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
