@@ -14,6 +14,10 @@
 #+REVEAL_HLEVEL: 2
 #+LANGUAGE: de
 # +REVEAL_EXTRA_CSS: ./presentation.css
+#
+#+REVEAL_HEAD_PREAMBLE: <!-- Copyright (C) 2017 Christian Garbs <mitch@cgarbs.de> -->
+#+REVEAL_HEAD_PREAMBLE: <!-- Licensed under Creative Commons Attribution-ShareAlike 4.0 International License -->
+#+REVEAL_HEAD_PREAMBLE: <!-- see https://creativecommons.org/licenses/by-sa/4.0/ -->
 
 #+TITLE: TDD, Clean Code, Software Craftmanship und so’n Zeug
 #+AUTHOR: mitch@cgarbs.de
