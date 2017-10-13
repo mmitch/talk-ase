@@ -938,6 +938,30 @@ Begriffsverwirrung /Triangulation/ -> hier? beim grünen Pfad?
   - [[https://github.com/mmitch/kata-simple-poker-hands][Simple Poker Hands Kata]]
   - [[https://github.com/mmitch/kata-christmas-tree][Weihnachtsbaum-Kata]]
 
+** gesammelte Links
+- Software Craftmanship
+  - [[https://www.softwerkskammer.org/][Softwerkskammer]]
+- Katas
+  - [[https://gist.github.com/bobuss/6534934][Object Calesthenics]]
+- Source Repositories
+  - [[https://git-scm.com/][git]]
+  - [[https://subversion.apache.org/][SVN]]
+- Continuous Integration
+  - [[https://jenkins.io/][Jenkins]] 
+  - [[https://travis-ci.org/][TravisCI]]
+*** gesammelte Links
+- Continuous Inspection
+  - [[http://findbugs.sourceforge.net/][FindBugs]]
+  - [[https://www.sonarqube.org/][SonarQube]]
+  - [[https://pmd.github.io/][PMD/CPD]]
+  - [[https://metacpan.org/pod/Perl::Critic][Perl::Critic]]
+- Mutation Testing
+  - [[http://pitest.org][PIT mutation testing]]
+  - [[https://metacpan.org/pod/Devel::Mutator][Devel::Mutator]]
+- Clean Code
+  - [[http://clean-code-developer.de/][Clean Code Developer]]
+- im Team
+  - [[http://coderetreat.org/][Global Day of Coderetreat]]
 * Ende
 
 #+BEGIN_CENTER
