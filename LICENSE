@@ -1,0 +1,31 @@
+This project uses a wild mix of licenses, so it is best so have a look
+at the license information in every individual file.
+
+
+The talk itself (the source text and slides) is licensed as CC-BY-SA-4.0:
+
+    Copyright (C) 2017 Christian Garbs <mitch@cgarbs.de>
+    Licensed under Creative Commons Attribution-ShareAlike 4.0 International License
+    see https://creativecommons.org/licenses/by-sa/4.0/
+
+
+Helper programs (Makefiles, scripts) are licensed as GNU GPL 3:
+
+    Copyright (C) 2017 Christian Garbs <mitch@cgarbs.de>
+    Licensed under GNU GPL 3 or later
+
+
+The imported reveal.js library and the accompanying CSS styles are MIT
+licensed, see reveal.js/LICENSE for further details.
+
+My own stylesheets at reveal.js/css/theme/source are also MIT licensed:
+
+    Copyright (C) 2017 Christian Garbs <mitch@cgarbs.de>
+    MIT license
+
+
+Note that my reveal.js/css/theme/source/Makefile is licensed GNU GPL 3
+just like the main Makefile:
+
+    Copyright (C) 2017 Christian Garbs <mitch@cgarbs.de>
+    Licensed under GNU GPL 3 or later
